@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OKJ-Yn-QYz">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="dUJ-li-OZR">
+            <objects>
+                <viewController id="OKJ-Yn-QYz" customClass="JBFLoginViewController" customModule="ReVine" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="b81-04-5Wy"/>
+                        <viewControllerLayoutGuide type="bottom" id="YTe-VD-qDB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EuR-6w-fKe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vine gradient" translatesAutoresizingMaskIntoConstraints="NO" id="YWF-ML-pPH">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="pSa-XX-hHN">
+                                <rect key="frame" x="56" y="228" width="263" height="211"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mct-nW-2aR">
+                                        <rect key="frame" x="0.0" y="0.0" width="263" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="E-mail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PSI-5g-chv">
+                                        <rect key="frame" x="101" y="46" width="62" height="28"/>
+                                        <fontDescription key="fontDescription" name="Baskerville-SemiBoldItalic" family="Baskerville" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dau-D5-eqX">
+                                        <rect key="frame" x="0.0" y="84" width="263" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iwo-gn-hZn">
+                                        <rect key="frame" x="87" y="130" width="89" height="28"/>
+                                        <fontDescription key="fontDescription" name="Baskerville-SemiBoldItalic" family="Baskerville" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q41-ru-Gyo">
+                                        <rect key="frame" x="113" y="167" width="38" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="Gac-D4-MTi"/>
+                                        </constraints>
+                                        <state key="normal" title="Login">
+                                            <color key="titleColor" red="0.4039215686" green="0.2274509804" blue="0.71764705880000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="loginButtonTapped:" destination="OKJ-Yn-QYz" eventType="touchUpInside" id="Xwe-cr-2Vp"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="mct-nW-2aR" firstAttribute="width" secondItem="pSa-XX-hHN" secondAttribute="width" id="BDf-Ff-Xfb"/>
+                                    <constraint firstItem="Dau-D5-eqX" firstAttribute="width" secondItem="pSa-XX-hHN" secondAttribute="width" id="Z7i-1v-965"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="tmp-gv-3Ph">
+                                <rect key="frame" x="64" y="20" width="247" height="88"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Re" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sNc-TN-WAH">
+                                        <rect key="frame" x="0.0" y="0.0" width="81" height="88"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="88" id="oxd-bA-ZY5"/>
+                                            <constraint firstAttribute="width" constant="81" id="wGQ-tg-QN5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Baskerville-SemiBoldItalic" family="Baskerville" pointSize="68"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vine" translatesAutoresizingMaskIntoConstraints="NO" id="Cbg-E9-dn3">
+                                        <rect key="frame" x="81" y="0.0" width="166" height="88"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="88" id="RYI-2d-S16"/>
+                                            <constraint firstAttribute="width" constant="166" id="TyN-13-npu"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="YWF-ML-pPH" firstAttribute="centerX" secondItem="EuR-6w-fKe" secondAttribute="centerX" id="I2j-ER-caF"/>
+                            <constraint firstItem="YWF-ML-pPH" firstAttribute="centerY" secondItem="EuR-6w-fKe" secondAttribute="centerY" id="LL8-H8-14d"/>
+                            <constraint firstItem="tmp-gv-3Ph" firstAttribute="centerX" secondItem="EuR-6w-fKe" secondAttribute="centerX" id="QJC-Vd-xyD"/>
+                            <constraint firstItem="YWF-ML-pPH" firstAttribute="height" secondItem="EuR-6w-fKe" secondAttribute="height" id="enC-Nm-x90"/>
+                            <constraint firstItem="pSa-XX-hHN" firstAttribute="centerX" secondItem="EuR-6w-fKe" secondAttribute="centerX" id="fCM-Qw-XAf"/>
+                            <constraint firstItem="tmp-gv-3Ph" firstAttribute="top" secondItem="b81-04-5Wy" secondAttribute="bottom" id="gXD-DG-jW8"/>
+                            <constraint firstItem="pSa-XX-hHN" firstAttribute="width" secondItem="EuR-6w-fKe" secondAttribute="width" multiplier="0.7" id="jMl-i2-41j"/>
+                            <constraint firstItem="YWF-ML-pPH" firstAttribute="width" secondItem="EuR-6w-fKe" secondAttribute="width" id="scD-nX-U22"/>
+                            <constraint firstItem="pSa-XX-hHN" firstAttribute="centerY" secondItem="EuR-6w-fKe" secondAttribute="centerY" id="sfe-V0-3RG"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="mct-nW-2aR" id="Loa-cz-Why"/>
+                        <outlet property="loginButton" destination="q41-ru-Gyo" id="Hpb-Hp-75e"/>
+                        <outlet property="passwordTextField" destination="Dau-D5-eqX" id="qqH-gh-ZMQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZNR-Gu-l0r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-631.5" y="162.5"/>
+        </scene>
+        <!--Vine Feed Collection View Controller-->
+        <scene sceneID="NOZ-Rj-fOX">
+            <objects>
+                <collectionViewController id="eJV-ry-wUW" customClass="JBFVineFeedCollectionViewController" customModule="ReVine" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" id="Zsc-LO-Byk">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="hoZ-1F-7iL">
+                            <size key="itemSize" width="597.5" height="599"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="JBFVinePostCollectionViewCell" id="k4h-gr-NJL" customClass="JBFVinePostCollectionViewCell" customModule="ReVine" customModuleProvider="target">
+                                <rect key="frame" x="2" y="0.0" width="597" height="599"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="597" height="599"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gt9-Xs-UJV">
+                                            <rect key="frame" x="0.0" y="0.0" width="598" height="599"/>
+                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="gt9-Xs-UJV" secondAttribute="bottom" id="Ma1-Cd-02v"/>
+                                    <constraint firstAttribute="trailing" secondItem="gt9-Xs-UJV" secondAttribute="trailing" id="fNS-lm-uRv"/>
+                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="leading" secondItem="k4h-gr-NJL" secondAttribute="leading" id="o7z-Mr-PrD"/>
+                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="top" secondItem="k4h-gr-NJL" secondAttribute="top" id="pMv-IV-BPx"/>
+                                </constraints>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="eJV-ry-wUW" id="Iyg-el-EEx"/>
+                            <outlet property="delegate" destination="eJV-ry-wUW" id="bfO-m3-QUq"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3T2-0n-zYb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="25" y="142"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="vine" width="1200" height="440"/>
+        <image name="vine gradient" width="750" height="1300"/>
+    </resources>
+</document>
