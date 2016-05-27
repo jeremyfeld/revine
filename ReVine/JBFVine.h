@@ -21,6 +21,9 @@
 @property (nonatomic, assign) NSUInteger likes;
 @property (nonatomic, assign) NSUInteger comments;
 @property (nonatomic, assign) NSUInteger reposts;
+@property (nonatomic, assign) BOOL userHasLiked;
+@property (nonatomic, assign) BOOL userHasReposted;
+@property (nonatomic, assign) BOOL userIsBlocked;
 @property (nonatomic, strong) NSDictionary *jsonDictionary;
 
 - (instancetype)initWithDictionary:(NSDictionary *)jsonDictionary;

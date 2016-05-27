@@ -27,6 +27,9 @@
         _comments = [jsonDictionary[@"comments"][@"count"] unsignedIntegerValue];
         _reposts = [jsonDictionary[@"reposts"][@"count"] unsignedIntegerValue];
         _userAvatarImage = [UIImage imageNamed:@"vine v"];
+        _userHasLiked = [jsonDictionary[@"liked"] boolValue];
+        _userHasReposted = [jsonDictionary[@"myRepostId"] boolValue];
+        _userIsBlocked = [jsonDictionary[@"blocked"] boolValue];;
     }
     
     return self;
