@@ -7,16 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 
 @interface JBFVine : NSObject
 
-@property (nonatomic, strong) NSString *videoUrlString;
-@property (nonatomic, strong) NSURL *videoUrl;
 @property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *userAvatarUrl;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *dateString;
+@property (nonatomic, strong) NSURL *videoUrl;
+@property (nonatomic, strong) NSURL *userAvatarUrl;
+@property (nonatomic, strong) UIImage *userAvatarImage;
 @property (nonatomic, assign) NSUInteger loops;
 @property (nonatomic, assign) NSUInteger likes;
 @property (nonatomic, assign) NSUInteger comments;

@@ -75,7 +75,7 @@
     [sessionManager GET:@"https://api.vineapp.com/timelines/popular" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+        NSLog(@"RESPONSE: %@", responseObject);
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];

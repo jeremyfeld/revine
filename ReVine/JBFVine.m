@@ -17,16 +17,16 @@
     if (self) {
         
         _jsonDictionary = jsonDictionary;
-        _videoUrlString = jsonDictionary[@"videoUrl"];
         _videoUrl = [NSURL URLWithString:jsonDictionary[@"videoUrl"]];
         _username = jsonDictionary[@"username"];
-        _userAvatarUrl = jsonDictionary[@"avatarUrl"];
+        _userAvatarUrl = [NSURL URLWithString:jsonDictionary[@"avatarUrl"]];
         _title = jsonDictionary[@"description"];
         _dateString = jsonDictionary[@"created"];
         _loops = [jsonDictionary[@"loops"][@"count"] unsignedIntegerValue];
         _likes = [jsonDictionary[@"likes"][@"count"] unsignedIntegerValue];
         _comments = [jsonDictionary[@"comments"][@"count"] unsignedIntegerValue];
         _reposts = [jsonDictionary[@"reposts"][@"count"] unsignedIntegerValue];
+        _userAvatarImage = [UIImage imageNamed:@"vine v"];
     }
     
     return self;

@@ -56,13 +56,13 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        
         return 1
     }
     
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
+        
         return JBFVineClient.sharedDataStore().popularVines.count
     }
     
@@ -70,17 +70,25 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("JBFVinePostCollectionViewCell", forIndexPath: indexPath) as! JBFVinePostCollectionViewCell
         
         let vine = vineForIndexPath(indexPath)
- 
+        cell.numberOfLoopsLabel.text = "\(vine.loops)"
+        cell.datePostedLabel.text = "\(indexPath.item)"
+        cell.usernameLabel.text = vine.username
+        cell.titleLabel.text = vine.title
+        cell.numberOfLikesLabel.text = "\(vine.likes)"
+        cell.numberOfCommentsLabel.text = "\(vine.comments)"
+        cell.numberOfRepostsLabel.text = "\(vine.reposts)"
+        
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
-        cell.cvCellView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
-        avPlayerLayer.frame = cell.cvCellView.bounds
+        cell.cvCellMediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
+        avPlayerLayer.frame = cell.cvCellMediaView.bounds
         cell.cvCellView.layoutSubviews()
         
         let url = vine.videoUrl
         let playerItem = AVPlayerItem(URL: url)
         avPlayer.replaceCurrentItemWithPlayerItem(playerItem)
-        return cell
+        
         avPlayer.play()
+        return cell
         
         //i should add the thumbnail here instead... then elsewhere make a queue, play the queue when scrolls, and adjust queue accordingly
     }
