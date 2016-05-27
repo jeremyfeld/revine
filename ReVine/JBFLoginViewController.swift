@@ -40,7 +40,17 @@ class JBFLoginViewController: UIViewController {
     {
         var loginDictionary: [String: String] = ["username": self.emailTextField.text!, "password": self.passwordTextField.text!]
         print("\(loginDictionary)")
-        JBFVineClient.sharedDataStore().loginWithUserDictionary(loginDictionary)
+        JBFVineClient.sharedDataStore().loginWithUserDictionary(loginDictionary) { (loggedIn) in
+            
+            if (loggedIn) {
+                
+                self .performSegueWithIdentifier("segueToTimeline", sender: self)
+                
+            } else {
+                
+            }
+            
+        }
         
         
     }

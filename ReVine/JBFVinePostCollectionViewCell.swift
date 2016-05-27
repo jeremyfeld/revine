@@ -9,6 +9,8 @@
 import UIKit
 
 class JBFVinePostCollectionViewCell: UICollectionViewCell {
+    
+    @IBOutlet weak var cvCellView: UIView!
   
     enum buttonTypes {
         case like

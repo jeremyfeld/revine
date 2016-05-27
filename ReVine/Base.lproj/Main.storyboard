@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="OKJ-Yn-QYz">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
@@ -104,6 +105,7 @@
                         <outlet property="emailTextField" destination="mct-nW-2aR" id="Loa-cz-Why"/>
                         <outlet property="loginButton" destination="q41-ru-Gyo" id="Hpb-Hp-75e"/>
                         <outlet property="passwordTextField" destination="Dau-D5-eqX" id="qqH-gh-ZMQ"/>
+                        <segue destination="eJV-ry-wUW" kind="show" identifier="segueToTimeline" id="5pP-a6-bT9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZNR-Gu-l0r" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -115,7 +117,7 @@
             <objects>
                 <collectionViewController id="eJV-ry-wUW" customClass="JBFVineFeedCollectionViewController" customModule="ReVine" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" id="Zsc-LO-Byk">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="hoZ-1F-7iL">
                             <size key="itemSize" width="597.5" height="599"/>
@@ -125,25 +127,29 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="JBFVinePostCollectionViewCell" id="k4h-gr-NJL" customClass="JBFVinePostCollectionViewCell" customModule="ReVine" customModuleProvider="target">
-                                <rect key="frame" x="2" y="0.0" width="597" height="599"/>
+                                <rect key="frame" x="-111.5" y="0.0" width="597.5" height="599"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="597" height="599"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="597.5" height="599"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gt9-Xs-UJV">
-                                            <rect key="frame" x="0.0" y="0.0" width="598" height="599"/>
-                                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gt9-Xs-UJV">
+                                            <rect key="frame" x="0.0" y="1" width="597.5" height="597.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="gt9-Xs-UJV" secondAttribute="bottom" id="Ma1-Cd-02v"/>
-                                    <constraint firstAttribute="trailing" secondItem="gt9-Xs-UJV" secondAttribute="trailing" id="fNS-lm-uRv"/>
-                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="leading" secondItem="k4h-gr-NJL" secondAttribute="leading" id="o7z-Mr-PrD"/>
-                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="top" secondItem="k4h-gr-NJL" secondAttribute="top" id="pMv-IV-BPx"/>
+                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="height" secondItem="k4h-gr-NJL" secondAttribute="width" id="KcU-8g-eFr"/>
+                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="centerX" secondItem="k4h-gr-NJL" secondAttribute="centerX" id="SZP-rc-zOq"/>
+                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="width" secondItem="k4h-gr-NJL" secondAttribute="width" id="Ymh-gD-xtF"/>
+                                    <constraint firstItem="gt9-Xs-UJV" firstAttribute="centerY" secondItem="k4h-gr-NJL" secondAttribute="centerY" id="vGh-wU-lK3"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="cvCellView" destination="gt9-Xs-UJV" id="VtW-aW-OZW"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
