@@ -13,6 +13,9 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cvCellView: UIView!
     @IBOutlet weak var cvCellMediaView: UIView!
     @IBOutlet weak var numberOfLoopsLabel: UILabel!
+    
+    @IBOutlet weak var likeButtonContainerView: UIView!
+    
     @IBOutlet weak var datePostedLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!

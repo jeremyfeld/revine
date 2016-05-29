@@ -140,4 +140,36 @@
     }];
 }
 
+//like
+//POST https://api.vineapp.com/posts/xxxx/likes
+
+/*   
+ "like": {
+ "endpoint": "posts/%s/likes",
+ "request_type": "post",
+ "url_params": ["post_id"],
+ "required_params": [],
+ "optional_params": [],
+ "model": "Like"
+ 
+ 
+ 
+ unlike
+ "unlike": {
+ "endpoint": "posts/%s/likes",
+ "request_type": "delete",
+ "url_params": ["post_id"],
+ "required_params": [],
+ "optional_params": [],
+ 
+ */
+
+//comment
+
+//repost
+//"revine": {
+//    "endpoint": "posts/%s/repost",
+//    "request_type": "post",
+//    "url_params": ["post_id"],
+
 @end
