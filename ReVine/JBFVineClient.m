@@ -59,7 +59,7 @@
         } else {
             
             loggedIn(NO);
-            NSLog(@"oh shit");
+            NSLog(@"error");
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -77,7 +77,6 @@
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"RESPONSE: %@", responseObject);
         
-        
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
@@ -91,7 +90,6 @@
                 }];
 
             [self.popularVines addObject:vine];
-            
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
@@ -120,6 +118,7 @@
             
             [self.popularVines addObject:vine];
         }
+        
         self.nextPage = responseObject[@"data"][@"nextPage"];
         
         completionBlock(YES);

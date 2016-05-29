@@ -17,58 +17,45 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     
     var popularVines = JBFVineClient.sharedDataStore().popularVines
     var avPlayer = AVPlayer()
-    var avPlayerLayer: AVPlayerLayer!
-
+    
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
         
-        
         JBFVineClient.sharedDataStore().getPopularVinesWithCompletion { (success) in
             
             if (success) {
-                NSOperationQueue .mainQueue().addOperationWithBlock({
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock({
                     
                     self.collectionView?.reloadData()
-                    print(JBFVineClient.sharedDataStore().popularVines.count)
                 })
             }
         }
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-        
-        // Register cell classes
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)),
-                                                         name: AVPlayerItemDidPlayToEndTimeNotification,
-                                                         object: avPlayer.currentItem)
-        
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidLayoutSubviews() {
-
-    }
-    
-    override func viewWillLayoutSubviews() {
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object: avPlayer.currentItem)
     }
     
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
-        print("collection view will dispaly cell")
-        
+        if indexPath.section == 0 {
+            
+            let cell = cell as! JBFVinePostCollectionViewCell
+            
+            cell.cellAVPlayer!.play()
+        }
     }
     
-    
-//     MARK: UICollectionViewDataSource
+    //     MARK: UICollectionViewDataSource
     
     func vineForIndexPath(indexPath: NSIndexPath) -> JBFVine {
+        
         return popularVines[indexPath.item] as! JBFVine
     }
     
@@ -77,52 +64,69 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         return 1
     }
     
-    
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return JBFVineClient.sharedDataStore().popularVines.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("JBFVinePostCollectionViewCell", forIndexPath: indexPath) as! JBFVinePostCollectionViewCell
         
         let vine = vineForIndexPath(indexPath)
+        
+        var dateFormatter: NSDateFormatter = NSDateFormatter.init()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.ssssss"
+        var date: NSDate! = dateFormatter.dateFromString(vine.dateString)
+        dateFormatter.dateFormat = "MMM d, yyyy"
+
         cell.numberOfLoopsLabel.text = "\(vine.loops)"
-        cell.datePostedLabel.text = "\(indexPath.item)"
+        cell.datePostedLabel.text = dateFormatter.stringFromDate(date)
         cell.usernameLabel.text = vine.username
         cell.titleLabel.text = vine.title
         cell.numberOfLikesLabel.text = "\(vine.likes)"
         cell.numberOfCommentsLabel.text = "\(vine.comments)"
         cell.numberOfRepostsLabel.text = "\(vine.reposts)"
         cell.userAvatarImageView.image = vine.userAvatarImage
-        cell.vineThumbnailImageView.image = vine.vineThumbnailImage
+        //        cell.vineThumbnailImageView.image = vine.vineThumbnailImage
         
-        if (indexPath.item == 0) {
-            cell.vineThumbnailImageView.hidden = true;
-            avPlayerLayer = AVPlayerLayer(player: avPlayer)
+        let url = vine.videoUrl
+        let playerItem = AVPlayerItem(URL: url)
+        
+        if ((cell.cellAVPlayer) != nil) {
+            
+            cell.cellAVPlayer!.replaceCurrentItemWithPlayerItem(playerItem)
+            
+        } else {
+            
+            
+            cell.cellAVPlayer = AVPlayer(playerItem: playerItem)
+            
+            var avPlayerLayer = AVPlayerLayer(player: cell.cellAVPlayer)
             cell.cvCellMediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
             avPlayerLayer.frame = cell.cvCellMediaView.bounds
             
-            let url = vine.videoUrl
-            let playerItem = AVPlayerItem(URL: url)
-                    avPlayer.replaceCurrentItemWithPlayerItem(playerItem)
-            avPlayer.play()
-            
         }
-//        avPlayerLayer = AVPlayerLayer(player: avPlayer)
-//        cell.cvCellMediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
-//        avPlayerLayer.frame = cell.cvCellMediaView.bounds
-//        
-//        let url = vine.videoUrl
-//        let playerItem = AVPlayerItem(URL: url)
-//  
-//        avPlayer.replaceCurrentItemWithPlayerItem(playerItem)
+        
         return cell
-
     }
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        //access content offset?
+        print("\(scrollView.contentOffset)")
+        
+        for cell in (self.collectionView?.visibleCells())! {
+            let cellToPlay = cell as! JBFVinePostCollectionViewCell
+            
+            cellToPlay.cellAVPlayer!.pause()
+        }
+    }
+    
+    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        for cell in (self.collectionView?.visibleCells())! {
+            let cellToPlay = cell as! JBFVinePostCollectionViewCell
+            
+            cellToPlay.cellAVPlayer!.play()
+        }
     }
     
     func scrollToItemAtIndexPath(indexPath: NSIndexPath, atScrollPosition scrollPosition: UICollectionViewScrollPosition, animated: Bool) {
@@ -131,11 +135,12 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     }
     
     func playerItemDidReachEnd(notification: NSNotification) {
+        
         avPlayer.seekToTime(kCMTimeZero)
         avPlayer.play()
     }
     
-//     MARK: UICollectionViewDelegate
+    //     MARK: UICollectionViewDelegate
     
     /*
      // Uncomment this method to specify if the specified item should be highlighted during tracking

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class JBFVinePostCollectionViewCell: UICollectionViewCell {
     
@@ -22,6 +23,9 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var numberOfRepostsLabel: UILabel!
     @IBOutlet weak var userAvatarImageView: UIImageView!
     @IBOutlet weak var vineThumbnailImageView: UIImageView!
+    var cellAVPlayer: AVPlayer?
+    
+    
     @IBAction func likeButtonTapped(sender: AnyObject)
     {
         
