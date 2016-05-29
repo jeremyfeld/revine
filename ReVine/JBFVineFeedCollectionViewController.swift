@@ -37,17 +37,34 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
             }
         }
         
-        
-        
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Register cell classes
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)),
+                                                         name: AVPlayerItemDidPlayToEndTimeNotification,
+                                                         object: avPlayer.currentItem)
+        
         // Do any additional setup after loading the view.
     }
+    
+    override func viewDidLayoutSubviews() {
+
+    }
+    
+    override func viewWillLayoutSubviews() {
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
+        print("collection view will dispaly cell")
+        
+    }
+    
     
 //     MARK: UICollectionViewDataSource
     
@@ -77,20 +94,31 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         cell.numberOfLikesLabel.text = "\(vine.likes)"
         cell.numberOfCommentsLabel.text = "\(vine.comments)"
         cell.numberOfRepostsLabel.text = "\(vine.reposts)"
+        cell.userAvatarImageView.image = vine.userAvatarImage
+        cell.vineThumbnailImageView.image = vine.vineThumbnailImage
         
-        avPlayerLayer = AVPlayerLayer(player: avPlayer)
-        cell.cvCellMediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
-        avPlayerLayer.frame = cell.cvCellMediaView.bounds
-        cell.cvCellView.layoutSubviews()
-        
-        let url = vine.videoUrl
-        let playerItem = AVPlayerItem(URL: url)
-        avPlayer.replaceCurrentItemWithPlayerItem(playerItem)
-        
-        avPlayer.play()
+        if (indexPath.item == 0) {
+            cell.vineThumbnailImageView.hidden = true;
+            avPlayerLayer = AVPlayerLayer(player: avPlayer)
+            cell.cvCellMediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
+            avPlayerLayer.frame = cell.cvCellMediaView.bounds
+            
+            let url = vine.videoUrl
+            let playerItem = AVPlayerItem(URL: url)
+                    avPlayer.replaceCurrentItemWithPlayerItem(playerItem)
+            avPlayer.play()
+            
+        }
+//        avPlayerLayer = AVPlayerLayer(player: avPlayer)
+//        cell.cvCellMediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
+//        avPlayerLayer.frame = cell.cvCellMediaView.bounds
+//        
+//        let url = vine.videoUrl
+//        let playerItem = AVPlayerItem(URL: url)
+//  
+//        avPlayer.replaceCurrentItemWithPlayerItem(playerItem)
         return cell
-        
-        //i should add the thumbnail here instead... then elsewhere make a queue, play the queue when scrolls, and adjust queue accordingly
+
     }
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -100,6 +128,11 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     func scrollToItemAtIndexPath(indexPath: NSIndexPath, atScrollPosition scrollPosition: UICollectionViewScrollPosition, animated: Bool) {
         
         
+    }
+    
+    func playerItemDidReachEnd(notification: NSNotification) {
+        avPlayer.seekToTime(kCMTimeZero)
+        avPlayer.play()
     }
     
 //     MARK: UICollectionViewDelegate
@@ -132,4 +165,5 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
      
      }
      */
+    
 }

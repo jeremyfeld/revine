@@ -13,9 +13,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cvCellView: UIView!
     @IBOutlet weak var cvCellMediaView: UIView!
     @IBOutlet weak var numberOfLoopsLabel: UILabel!
-    
     @IBOutlet weak var likeButtonContainerView: UIView!
-    
     @IBOutlet weak var datePostedLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -23,15 +21,10 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var numberOfCommentsLabel: UILabel!
     @IBOutlet weak var numberOfRepostsLabel: UILabel!
     @IBOutlet weak var userAvatarImageView: UIImageView!
-    
-    enum buttonTypes {
-        case like
-        case repost
-        case comment
-    }
-    
+    @IBOutlet weak var vineThumbnailImageView: UIImageView!
     @IBAction func likeButtonTapped(sender: AnyObject)
     {
+        
     }
 
     @IBAction func commentButtonTapped(sender: AnyObject)

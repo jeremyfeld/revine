@@ -20,6 +20,7 @@
         _videoUrl = [NSURL URLWithString:jsonDictionary[@"videoUrl"]];
         _username = jsonDictionary[@"username"];
         _userAvatarUrl = [NSURL URLWithString:jsonDictionary[@"avatarUrl"]];
+        _vineThumbnailUrl = [NSURL URLWithString:jsonDictionary[@"thumbnailUrl"]];
         _title = jsonDictionary[@"description"];
         _dateString = jsonDictionary[@"created"];
         _loops = [jsonDictionary[@"loops"][@"count"] unsignedIntegerValue];

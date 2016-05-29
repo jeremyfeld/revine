@@ -76,10 +76,22 @@
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"RESPONSE: %@", responseObject);
+        
+        
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
+            
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    vine.userAvatarImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.userAvatarUrl]];
+                }];
+                
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    vine.vineThumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.vineThumbnailUrl]];
+                }];
+
             [self.popularVines addObject:vine];
+            
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
