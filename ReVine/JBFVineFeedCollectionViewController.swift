@@ -13,13 +13,23 @@ import AVFoundation
 
 private let reuseIdentifier = "Cell"
 
-class JBFVineFeedCollectionViewController: UICollectionViewController {
+protocol UpdateButtonTintProtocol {
+    
+    func setDefaultTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell)
+    func setRedTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell)
+    func setPurpleTintForRepost(button:UIButton, cell: JBFVinePostCollectionViewCell)
+}
+
+class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateButtonTintProtocol {
     
     var popularVines = JBFVineClient.sharedClient().popularVines
     var avPlayer = AVPlayer()
     var currentCell = JBFVinePostCollectionViewCell()
     var previousCell = JBFVinePostCollectionViewCell()
-    
+    let originalLikeImage = UIImage(named: "like");
+    let originalRepostImage = UIImage(named: "repost")
+    var tintedLikeImage = UIImage()
+    var tintedRepostImage = UIImage()
     
     override func viewDidLoad() {
         
@@ -27,6 +37,10 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
+        
+        self.tintedLikeImage = (originalLikeImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate))!
+        self.tintedRepostImage = (originalRepostImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate))!
+        
         
         JBFVineClient.sharedClient().getPopularVinesWithSessionID(JBFVineClient.sharedClient().returnUserKey()) { (success) in
             
@@ -38,27 +52,10 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
                 })
             }
         }
-
+        
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-     
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object:self.currentCell.cellAVPlayer)
-    }
-    
-    override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        
-//        if indexPath.section == 0 {
-        
-            self.currentCell = cell as! JBFVinePostCollectionViewCell
-            
-            self.currentCell.cellAVPlayer!.play()
-//        }
-    }
-    
-    override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        
-        self.previousCell = cell as! JBFVinePostCollectionViewCell
-        
-        self.previousCell.cellAVPlayer!.pause()
     }
     
     //     MARK: UICollectionViewDataSource
@@ -82,6 +79,8 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("JBFVinePostCollectionViewCell", forIndexPath: indexPath) as! JBFVinePostCollectionViewCell
         
+        cell.updateButtonDelegate = self
+        
         let vine = vineForIndexPath(indexPath)
         
         var dateFormatter: NSDateFormatter = NSDateFormatter.init()
@@ -97,20 +96,22 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         
         if vine.userHasLiked {
             
-            cell.likeButtonContainerView.backgroundColor = UIColor.purpleColor()
+            cell.likeButton.setImage(tintedLikeImage, forState: UIControlState.Normal)
+            cell.likeButton.tintColor = UIColor.redColor()
             
         } else {
             
-            cell.likeButtonContainerView.backgroundColor = UIColor.whiteColor()
+            cell.likeButton.setImage(originalLikeImage, forState: UIControlState.Normal)
         }
         
         if vine.userHasReposted {
             
-            cell.repostButtonContainerView.backgroundColor = UIColor.purpleColor()
+            cell.repostButton.setImage(tintedLikeImage, forState: UIControlState.Normal)
+            cell.repostButton.tintColor = UIColor.purpleColor()
             
         } else {
             
-            cell.repostButtonContainerView.backgroundColor = UIColor.whiteColor()
+            cell.repostButton.setImage(originalRepostImage, forState: UIControlState.Normal)
         }
         
         cell.numberOfLikesLabel.text = "\(vine.likes)"
@@ -138,24 +139,43 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         return cell
     }
     
+//    MARK: AVPlayer Methods for CollectionViewCell
+    
+    override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
+        //        if indexPath.section == 0 {
+        
+        self.currentCell = cell as! JBFVinePostCollectionViewCell
+        
+        self.currentCell.cellAVPlayer!.play()
+        //        }
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
+        self.previousCell = cell as! JBFVinePostCollectionViewCell
+        
+        self.previousCell.cellAVPlayer!.pause()
+    }
+    
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         
-//        for cell in (self.collectionView?.visibleCells())! {
-//            
-//            let cellToPlay = cell as! JBFVinePostCollectionViewCell
-//            
-//            cellToPlay.cellAVPlayer!.pause()
-//        }
+        //        for cell in (self.collectionView?.visibleCells())! {
+        //
+        //            let cellToPlay = cell as! JBFVinePostCollectionViewCell
+        //
+        //            cellToPlay.cellAVPlayer!.pause()
+        //        }
     }
     
     override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         
-//        for cell in (self.collectionView?.visibleCells())! {
-//            
-//            self.currentCell = cell as! JBFVinePostCollectionViewCell
-//            
-//            self.currentCell.cellAVPlayer!.play()
-//        }
+        //        for cell in (self.collectionView?.visibleCells())! {
+        //
+        //            self.currentCell = cell as! JBFVinePostCollectionViewCell
+        //
+        //            self.currentCell.cellAVPlayer!.play()
+        //        }
     }
     
     func playerItemDidReachEnd(notification: NSNotification) {
@@ -164,34 +184,25 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         self.currentCell.cellAVPlayer!.play()
     }
     
-    //     MARK: UICollectionViewDelegate
+//    MARK: Update Button Tint Methods
     
-    /*
-     // Uncomment this method to specify if the specified item should be highlighted during tracking
-     override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-     return true
-     }
-     */
+    func setDefaultTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell) {
+        
+        cell.likeButton.setImage(originalLikeImage, forState: UIControlState.Normal)
+        cell.vine?.userHasLiked = false
+    }
     
-    /*
-     // Uncomment this method to specify if the specified item should be selected
-     override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-     return true
-     }
-     */
+    func setRedTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell) {
+        
+        cell.likeButton.setImage(tintedLikeImage, forState: UIControlState.Normal)
+        cell.likeButton.tintColor = UIColor.redColor()
+        cell.vine?.userHasLiked = true
+    }
     
-    /*
-     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-     override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-     return false
-     }
-     
-     override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-     return false
-     }
-     
-     override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-     
-     }
-     */
+    func setPurpleTintForRepost(button:UIButton, cell: JBFVinePostCollectionViewCell) {
+        
+        cell.repostButton.setImage(tintedRepostImage, forState: UIControlState.Normal)
+        cell.repostButton.tintColor = UIColor.purpleColor()
+        cell.vine?.userHasReposted = true
+    }
 }

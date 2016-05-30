@@ -23,8 +23,11 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var numberOfRepostsLabel: UILabel!
     @IBOutlet weak var userAvatarImageView: UIImageView!
     @IBOutlet weak var vineThumbnailImageView: UIImageView!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var repostButton: UIButton!
     var cellAVPlayer: AVPlayer?
     var vine: JBFVine?
+    var updateButtonDelegate: UpdateButtonTintProtocol!
     
     @IBAction func likeButtonTapped(sender: AnyObject) {
         
@@ -32,14 +35,14 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             
             JBFVineClient.sharedClient().unlikePost(self.vine!.postID, withSessionID:JBFVineClient.sharedClient().returnUserKey(), withCompletion: { (success) in
                 
-                self.likeButtonContainerView.backgroundColor = UIColor.whiteColor()
+                self.setDefaultTint(self.likeButton)
             })
             
         } else {
             
             JBFVineClient.sharedClient().likePost(self.vine!.postID, withSessionID: JBFVineClient.sharedClient().returnUserKey(), withCompletion: { (success) in
                 
-                self.likeButtonContainerView.backgroundColor = UIColor.purpleColor()
+                self.setRedTint(self.likeButton)
             })
         }
     }
@@ -59,8 +62,23 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             
             JBFVineClient.sharedClient().repost(self.vine!.postID, withSessionID: JBFVineClient.sharedClient().returnUserKey(), withCompletion: { (success) in
                 
-                self.repostButtonContainerView.backgroundColor = UIColor.purpleColor()
+                self.setPurpleTint(self.repostButton)
             })
         }
+    }
+    
+    func setRedTint(sender: UIButton){
+        
+        self.updateButtonDelegate.setRedTintForLike(sender, cell: self)
+    }
+    
+    func setPurpleTint(sender: UIButton){
+        
+        self.updateButtonDelegate.setPurpleTintForRepost(sender, cell: self)
+    }
+    
+    func setDefaultTint(sender: UIButton){
+        
+        self.updateButtonDelegate.setDefaultTintForLike(sender, cell: self)
     }
 }

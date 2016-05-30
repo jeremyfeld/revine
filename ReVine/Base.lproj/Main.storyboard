@@ -277,6 +277,7 @@
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-Sq-Z5y">
                                                                             <rect key="frame" x="4.5" y="6" width="30" height="34.5"/>
+                                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                             <state key="normal" title="Button" image="like"/>
                                                                             <connections>
                                                                                 <action selector="likeButtonTapped:" destination="k4h-gr-NJL" eventType="touchUpInside" id="itp-Np-Bje"/>
@@ -391,12 +392,14 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="datePostedLabel" destination="INp-6n-3Rn" id="wKN-5O-LH0"/>
+                                    <outlet property="likeButton" destination="EnV-Sq-Z5y" id="0iC-ax-pBm"/>
                                     <outlet property="likeButtonContainerView" destination="QdQ-fY-vRW" id="Wjh-X8-2cC"/>
                                     <outlet property="mediaView" destination="S67-rd-JH8" id="EbD-5f-BWR"/>
                                     <outlet property="numberOfCommentsLabel" destination="k61-dE-B8s" id="VwG-IW-8n0"/>
                                     <outlet property="numberOfLikesLabel" destination="0HG-58-fx5" id="Gkz-TY-yv7"/>
                                     <outlet property="numberOfLoopsLabel" destination="3wL-aX-g6C" id="Ev3-bX-Pxz"/>
                                     <outlet property="numberOfRepostsLabel" destination="dMG-yC-UcT" id="P7v-wi-34E"/>
+                                    <outlet property="repostButton" destination="egl-az-2fo" id="Exr-Bn-wIb"/>
                                     <outlet property="repostButtonContainerView" destination="dvY-so-DA2" id="Lev-kX-Cwc"/>
                                     <outlet property="titleLabel" destination="Zke-23-ncJ" id="79l-rS-UlI"/>
                                     <outlet property="userAvatarImageView" destination="QMe-cf-VGq" id="4us-r6-q2c"/>
