@@ -15,6 +15,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cvCellMediaView: UIView!
     @IBOutlet weak var numberOfLoopsLabel: UILabel!
     @IBOutlet weak var likeButtonContainerView: UIView!
+    @IBOutlet weak var repostButtonContainerView: UIView!
     @IBOutlet weak var datePostedLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -24,15 +25,43 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var userAvatarImageView: UIImageView!
     @IBOutlet weak var vineThumbnailImageView: UIImageView!
     var cellAVPlayer: AVPlayer?
+    var vine: JBFVine?
     
-    
-    @IBAction func likeButtonTapped(sender: AnyObject)
-    {
+    @IBAction func likeButtonTapped(sender: AnyObject) {
         
+        if self.vine!.userHasLiked == true {
+            
+            JBFVineClient.sharedDataStore().unlikePost(self.vine!.postID, withSessionID:JBFVineClient.sharedDataStore().userKey, withCompletion: { (success) in
+                
+                self.likeButtonContainerView.backgroundColor = UIColor.whiteColor()
+            })
+            
+        } else {
+            
+            JBFVineClient.sharedDataStore().likePost(self.vine!.postID, withSessionID: JBFVineClient.sharedDataStore().userKey, withCompletion: { (success) in
+                
+                self.likeButtonContainerView.backgroundColor = UIColor.purpleColor()
+            })
+        }
     }
-
-    @IBAction func commentButtonTapped(sender: AnyObject)
-    {
+    
+    @IBAction func commentButtonTapped(sender: AnyObject) {
+        
+        //comment - will need to present a view for text entry
     }
-    @IBOutlet weak var repostButtonTapped: UIButton!
+    
+    @IBAction func repostButtonTapped(sender: AnyObject) {
+        
+        if self.vine!.userHasReposted == true {
+            
+            //error message - already reposted
+            
+        } else {
+            
+            JBFVineClient.sharedDataStore().repost(self.vine!.postID, withSessionID: JBFVineClient.sharedDataStore().userKey, withCompletion: { (success) in
+                
+                self.repostButtonContainerView.backgroundColor = UIColor.purpleColor()
+            })
+        }
+    }
 }

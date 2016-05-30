@@ -18,7 +18,6 @@
 		CBF4316D1CF60732005D80EA /* ReVineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF4316C1CF60732005D80EA /* ReVineUITests.swift */; };
 		CBF4317B1CF607E7005D80EA /* JBFVineFeedCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF4317A1CF607E7005D80EA /* JBFVineFeedCollectionViewController.swift */; };
 		CBF4317D1CF60816005D80EA /* JBFVinePostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF4317C1CF60816005D80EA /* JBFVinePostCollectionViewCell.swift */; };
-		CBF4317F1CF60826005D80EA /* JBFVinePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF4317E1CF60826005D80EA /* JBFVinePost.swift */; };
 		DC9ADFED065C5B2D8DD18198 /* Pods_ReVine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8800B15AAC8B3C8A9AE25F7 /* Pods_ReVine.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,7 +61,6 @@
 		CBF4316E1CF60732005D80EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF4317A1CF607E7005D80EA /* JBFVineFeedCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JBFVineFeedCollectionViewController.swift; sourceTree = "<group>"; };
 		CBF4317C1CF60816005D80EA /* JBFVinePostCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JBFVinePostCollectionViewCell.swift; sourceTree = "<group>"; };
-		CBF4317E1CF60826005D80EA /* JBFVinePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JBFVinePost.swift; sourceTree = "<group>"; };
 		D8800B15AAC8B3C8A9AE25F7 /* Pods_ReVine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReVine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -135,7 +133,6 @@
 			isa = PBXGroup;
 			children = (
 				CBF4314C1CF60732005D80EA /* AppDelegate.swift */,
-				CBF4317E1CF60826005D80EA /* JBFVinePost.swift */,
 				CB11B0E11CF76E7A0009B927 /* JBFLoginViewController.swift */,
 				CBF4317A1CF607E7005D80EA /* JBFVineFeedCollectionViewController.swift */,
 				CBF4317C1CF60816005D80EA /* JBFVinePostCollectionViewCell.swift */,
@@ -355,7 +352,6 @@
 				CBF4317D1CF60816005D80EA /* JBFVinePostCollectionViewCell.swift in Sources */,
 				CBF4314D1CF60732005D80EA /* AppDelegate.swift in Sources */,
 				CB11B0E01CF76CCD0009B927 /* JBFVine.m in Sources */,
-				CBF4317F1CF60826005D80EA /* JBFVinePost.swift in Sources */,
 				CB11B0DD1CF76CAB0009B927 /* JBFVineClient.m in Sources */,
 				CBF4317B1CF607E7005D80EA /* JBFVineFeedCollectionViewController.swift in Sources */,
 				CB11B0E21CF76E7A0009B927 /* JBFLoginViewController.swift in Sources */,

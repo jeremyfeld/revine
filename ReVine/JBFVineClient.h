@@ -23,8 +23,11 @@
 
 + (JBFVineClient *) sharedDataStore;
 - (void)loginWithUserDictionary:(NSDictionary *)dictionary Completion:(void (^)(BOOL))loggedIn;
-- (void)getPopularVinesWithCompletion:(void (^)(BOOL))completionBlock;
-- (void)getPopularVinesForNextPage:(NSString *)page WithCompletion:(void (^)(BOOL))completionBlock;
-- (void)getUserTimelineWithCompletion:(void (^)(BOOL))completionBlock;
-
+- (void)getPopularVinesWithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
+- (void)getPopularVinesForNextPage:(NSString *)page WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
+- (void)getUserTimelineWithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
+- (void)likePost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
+- (void)unlikePost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
+- (void)repost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
+- (void)commentOnPost:(NSString *)postID WithSessionID:(NSString *)sessionID WithComment:(NSString *)commentString WithCompletion:(void (^)(BOOL))completionBlock;
 @end

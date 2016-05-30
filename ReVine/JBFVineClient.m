@@ -39,8 +39,8 @@
 - (void)loginWithUserDictionary:(NSDictionary *)dictionary Completion:(void (^)(BOOL))loggedIn
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    
     [sessionManager POST:@"https://api.vineapp.com/users/authenticate" parameters:dictionary progress:^(NSProgress * _Nonnull uploadProgress) {
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -68,9 +68,11 @@
     }];
 }
 
-- (void)getPopularVinesWithCompletion:(void (^)(BOOL))completionBlock
+- (void)getPopularVinesWithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
     
     [sessionManager GET:@"https://api.vineapp.com/timelines/popular" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         //
@@ -102,9 +104,11 @@
     }];
 }
 
-- (void)getPopularVinesForNextPage:(NSString *)page WithCompletion:(void (^)(BOOL))completionBlock
+- (void)getPopularVinesForNextPage:(NSString *)page WithSessionID:(NSString *)sessionID  WithCompletion:(void (^)(BOOL))completionBlock
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
     
     NSString *nextPage = [NSString stringWithFormat:@"https://api.vineapp.com/timelines/popular?page=%@", self.nextPage];
     
@@ -130,9 +134,11 @@
     }];
 }
 
-- (void)getUserTimelineWithCompletion:(void (^)(BOOL))completionBlock;
+- (void)getUserTimelineWithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
     
     NSString *userTimeline = [NSString stringWithFormat:@"https://api.vineapp.com/timelines/users/%@",self.userID];
     
@@ -151,36 +157,64 @@
     }];
 }
 
-//like
-//POST https://api.vineapp.com/posts/xxxx/likes
+- (void)likePost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
+{
+    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    
+    NSString *postEndpoint = [NSString stringWithFormat:@"https://api.vineapp.com/posts/%@/likes", postID];
+    
+    [sessionManager POST:postEndpoint parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        //
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //
+        completionBlock(YES);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //
+        completionBlock(NO);
+    }];
+}
 
-/*   
- "like": {
- "endpoint": "posts/%s/likes",
- "request_type": "post",
- "url_params": ["post_id"],
- "required_params": [],
- "optional_params": [],
- "model": "Like"
- 
- 
- 
- unlike
- "unlike": {
- "endpoint": "posts/%s/likes",
- "request_type": "delete",
- "url_params": ["post_id"],
- "required_params": [],
- "optional_params": [],
- 
- */
+- (void)unlikePost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
+{
+    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    
+    NSString *postEndpoint = [NSString stringWithFormat:@"https://api.vineapp.com/posts/%@/likes", postID];
+    
+    [sessionManager DELETE:postEndpoint parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //
+        completionBlock(YES);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //
+        completionBlock(NO);
+    }];
+}
 
-//comment
+- (void)repost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
+{
+    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
+    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    
+    NSString *postEndpoint = [NSString stringWithFormat:@"https://api.vineapp.com/posts/%@/repost", postID];
+    
+    [sessionManager POST:postEndpoint parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+        //
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //
+        completionBlock(YES);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //
+        completionBlock(NO);
+    }];
+}
 
-//repost
-//"revine": {
-//    "endpoint": "posts/%s/repost",
-//    "request_type": "post",
-//    "url_params": ["post_id"],
+- (void)commentOnPost:(NSString *)postID WithSessionID:(NSString *)sessionID WithComment:(NSString *)commentString WithCompletion:(void (^)(BOOL))completionBlock
+{
+
+}
 
 @end

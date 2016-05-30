@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *dateString;
+@property (nonatomic, strong) NSString *postID;
 @property (nonatomic, strong) NSURL *videoUrl;
 @property (nonatomic, strong) NSURL *userAvatarUrl;
 @property (nonatomic, strong) NSURL *vineThumbnailUrl;

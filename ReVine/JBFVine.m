@@ -19,6 +19,7 @@
         _jsonDictionary = jsonDictionary;
         _videoUrl = [NSURL URLWithString:jsonDictionary[@"videoUrl"]];
         _username = jsonDictionary[@"username"];
+        _postID = [NSString stringWithFormat:@"%@", jsonDictionary[@"postId"] ];
         _userAvatarUrl = [NSURL URLWithString:jsonDictionary[@"avatarUrl"]];
         _vineThumbnailUrl = [NSURL URLWithString:jsonDictionary[@"thumbnailUrl"]];
         _title = jsonDictionary[@"description"];

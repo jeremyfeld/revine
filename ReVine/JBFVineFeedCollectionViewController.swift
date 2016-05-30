@@ -26,7 +26,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
         
-        JBFVineClient.sharedDataStore().getPopularVinesWithCompletion { (success) in
+        JBFVineClient.sharedDataStore().getPopularVinesWithSessionID(JBFVineClient.sharedDataStore().userKey) { (success) in
             
             if (success) {
                 
@@ -36,7 +36,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
                 })
             }
         }
-        
+
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object: avPlayer.currentItem)
@@ -79,11 +79,31 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.ssssss"
         var date: NSDate! = dateFormatter.dateFromString(vine.dateString)
         dateFormatter.dateFormat = "MMM d, yyyy"
-
+        
+        cell.vine = vine
         cell.numberOfLoopsLabel.text = "\(vine.loops)"
         cell.datePostedLabel.text = dateFormatter.stringFromDate(date)
         cell.usernameLabel.text = vine.username
         cell.titleLabel.text = vine.title
+        
+        if vine.userHasLiked {
+            
+            cell.likeButtonContainerView.backgroundColor = UIColor.purpleColor()
+            
+        } else {
+            
+            cell.likeButtonContainerView.backgroundColor = UIColor.whiteColor()
+        }
+        
+        if vine.userHasReposted {
+            
+            cell.repostButtonContainerView.backgroundColor = UIColor.purpleColor()
+            
+        } else {
+            
+            cell.repostButtonContainerView.backgroundColor = UIColor.whiteColor()
+        }
+        
         cell.numberOfLikesLabel.text = "\(vine.likes)"
         cell.numberOfCommentsLabel.text = "\(vine.comments)"
         cell.numberOfRepostsLabel.text = "\(vine.reposts)"
@@ -99,22 +119,20 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
             
         } else {
             
-            
             cell.cellAVPlayer = AVPlayer(playerItem: playerItem)
             
             var avPlayerLayer = AVPlayerLayer(player: cell.cellAVPlayer)
             cell.cvCellMediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
             avPlayerLayer.frame = cell.cvCellMediaView.bounds
-            
         }
         
         return cell
     }
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        print("\(scrollView.contentOffset)")
         
         for cell in (self.collectionView?.visibleCells())! {
+            
             let cellToPlay = cell as! JBFVinePostCollectionViewCell
             
             cellToPlay.cellAVPlayer!.pause()
@@ -122,7 +140,9 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     }
     
     override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        
         for cell in (self.collectionView?.visibleCells())! {
+            
             let cellToPlay = cell as! JBFVinePostCollectionViewCell
             
             cellToPlay.cellAVPlayer!.play()
@@ -170,5 +190,4 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
      
      }
      */
-    
 }
