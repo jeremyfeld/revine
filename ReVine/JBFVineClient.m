@@ -8,9 +8,18 @@
 
 #import "JBFVineClient.h"
 
+@interface JBFVineClient ()
+
+@property (nonatomic, strong) NSString *userID;
+@property (nonatomic, strong) NSString *userKey;
+@property (nonatomic, strong) NSString *avatarUrlString;
+@property (nonatomic, strong) NSString *username;
+
+@end
+
 @implementation JBFVineClient
 
-+ (JBFVineClient *)sharedDataStore
++ (JBFVineClient *)sharedClient
 {
     static JBFVineClient *theInstance = nil;
     static dispatch_once_t onceToken;
@@ -215,6 +224,11 @@
 - (void)commentOnPost:(NSString *)postID WithSessionID:(NSString *)sessionID WithComment:(NSString *)commentString WithCompletion:(void (^)(BOOL))completionBlock
 {
 
+}
+
+-(NSString *)returnUserKey
+{
+    return self.userKey;
 }
 
 @end

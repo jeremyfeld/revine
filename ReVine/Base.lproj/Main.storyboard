@@ -390,10 +390,9 @@
                                     <constraint firstItem="gt9-Xs-UJV" firstAttribute="centerY" secondItem="k4h-gr-NJL" secondAttribute="centerY" id="vGh-wU-lK3"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="cvCellMediaView" destination="S67-rd-JH8" id="MLF-Ep-Shc"/>
-                                    <outlet property="cvCellView" destination="gt9-Xs-UJV" id="VtW-aW-OZW"/>
                                     <outlet property="datePostedLabel" destination="INp-6n-3Rn" id="wKN-5O-LH0"/>
                                     <outlet property="likeButtonContainerView" destination="QdQ-fY-vRW" id="Wjh-X8-2cC"/>
+                                    <outlet property="mediaView" destination="S67-rd-JH8" id="EbD-5f-BWR"/>
                                     <outlet property="numberOfCommentsLabel" destination="k61-dE-B8s" id="VwG-IW-8n0"/>
                                     <outlet property="numberOfLikesLabel" destination="0HG-58-fx5" id="Gkz-TY-yv7"/>
                                     <outlet property="numberOfLoopsLabel" destination="3wL-aX-g6C" id="Ev3-bX-Pxz"/>

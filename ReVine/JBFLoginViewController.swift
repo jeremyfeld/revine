@@ -24,7 +24,7 @@ class JBFLoginViewController: UIViewController {
         
         var loginDictionary: [String: String] = ["username": self.emailTextField.text!, "password": self.passwordTextField.text!]
         
-        JBFVineClient.sharedDataStore().loginWithUserDictionary(loginDictionary) { (loggedIn) in
+        JBFVineClient.sharedClient().loginWithUserDictionary(loginDictionary) { (loggedIn) in
             
             if (loggedIn) {
                 

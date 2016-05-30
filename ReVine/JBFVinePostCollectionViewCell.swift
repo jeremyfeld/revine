@@ -11,8 +11,7 @@ import AVFoundation
 
 class JBFVinePostCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var cvCellView: UIView!
-    @IBOutlet weak var cvCellMediaView: UIView!
+    @IBOutlet weak var mediaView: UIView!
     @IBOutlet weak var numberOfLoopsLabel: UILabel!
     @IBOutlet weak var likeButtonContainerView: UIView!
     @IBOutlet weak var repostButtonContainerView: UIView!
@@ -31,14 +30,14 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         
         if self.vine!.userHasLiked == true {
             
-            JBFVineClient.sharedDataStore().unlikePost(self.vine!.postID, withSessionID:JBFVineClient.sharedDataStore().userKey, withCompletion: { (success) in
+            JBFVineClient.sharedClient().unlikePost(self.vine!.postID, withSessionID:JBFVineClient.sharedClient().returnUserKey(), withCompletion: { (success) in
                 
                 self.likeButtonContainerView.backgroundColor = UIColor.whiteColor()
             })
             
         } else {
             
-            JBFVineClient.sharedDataStore().likePost(self.vine!.postID, withSessionID: JBFVineClient.sharedDataStore().userKey, withCompletion: { (success) in
+            JBFVineClient.sharedClient().likePost(self.vine!.postID, withSessionID: JBFVineClient.sharedClient().returnUserKey(), withCompletion: { (success) in
                 
                 self.likeButtonContainerView.backgroundColor = UIColor.purpleColor()
             })
@@ -58,7 +57,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             
         } else {
             
-            JBFVineClient.sharedDataStore().repost(self.vine!.postID, withSessionID: JBFVineClient.sharedDataStore().userKey, withCompletion: { (success) in
+            JBFVineClient.sharedClient().repost(self.vine!.postID, withSessionID: JBFVineClient.sharedClient().returnUserKey(), withCompletion: { (success) in
                 
                 self.repostButtonContainerView.backgroundColor = UIColor.purpleColor()
             })
