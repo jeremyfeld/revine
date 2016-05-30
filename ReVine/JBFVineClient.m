@@ -68,12 +68,10 @@
         } else {
             
             loggedIn(NO);
-            NSLog(@"error");
         }
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        // handle error
+        loggedIn(NO);
     }];
 }
 
@@ -86,7 +84,6 @@
     [sessionManager GET:@"https://api.vineapp.com/timelines/popular" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"RESPONSE: %@", responseObject);
         
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
@@ -109,7 +106,7 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        //present an error alert
+        completionBlock(NO);
     }];
 }
 
@@ -138,8 +135,7 @@
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        NSLog(@"failed: %@", error.localizedDescription);
-        //present an error alert
+        completionBlock(NO);
     }];
 }
 
@@ -155,13 +151,27 @@
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSLog(@"USER TIMELINE: %@", responseObject);
+        for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
+            
+            JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                vine.userAvatarImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.userAvatarUrl]];
+            }];
+            
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                vine.vineThumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.vineThumbnailUrl]];
+            }];
+            
+            [self.userTimelineVines addObject:vine];
+        }
         
+        self.nextPage = responseObject[@"data"][@"nextPage"];
+
         completionBlock(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        //
         completionBlock(NO);
     }];
 }
@@ -177,10 +187,11 @@
     [sessionManager POST:postEndpoint parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //
+        
         completionBlock(YES);
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        //
+        
         completionBlock(NO);
     }];
 }
@@ -196,8 +207,9 @@
     [sessionManager DELETE:postEndpoint parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //
         completionBlock(YES);
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        //
+        
         completionBlock(NO);
     }];
 }
@@ -213,10 +225,11 @@
     [sessionManager POST:postEndpoint parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //
+        
         completionBlock(YES);
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        //
+        
         completionBlock(NO);
     }];
 }

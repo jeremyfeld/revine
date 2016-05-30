@@ -15,9 +15,9 @@ private let reuseIdentifier = "Cell"
 
 protocol UpdateButtonTintProtocol {
     
-    func setDefaultTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell)
-    func setRedTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell)
-    func setPurpleTintForRepost(button:UIButton, cell: JBFVinePostCollectionViewCell)
+    func updateCellForUnlike(button:UIButton, cell: JBFVinePostCollectionViewCell)
+    func updateCellForLike(button:UIButton, cell: JBFVinePostCollectionViewCell)
+    func updateCellForRepost(button:UIButton, cell: JBFVinePostCollectionViewCell)
 }
 
 class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateButtonTintProtocol {
@@ -41,7 +41,6 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateBut
         self.tintedLikeImage = (originalLikeImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate))!
         self.tintedRepostImage = (originalRepostImage?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate))!
         
-        
         JBFVineClient.sharedClient().getPopularVinesWithSessionID(JBFVineClient.sharedClient().returnUserKey()) { (success) in
             
             if (success) {
@@ -50,6 +49,12 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateBut
                     
                     self.collectionView?.reloadData()
                 })
+                
+            } else {
+                
+                let controller = UIAlertController.alertControllerWithTitle("Error", message: "There was an error loading the timeline")
+                
+                self.presentViewController(controller, animated: true, completion: nil)
             }
         }
         
@@ -118,7 +123,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateBut
         cell.numberOfCommentsLabel.text = "\(vine.comments)"
         cell.numberOfRepostsLabel.text = "\(vine.reposts)"
         cell.userAvatarImageView.image = vine.userAvatarImage
-        //        cell.vineThumbnailImageView.image = vine.vineThumbnailImage
+        //cell.vineThumbnailImageView.image = vine.vineThumbnailImage
         
         let url = vine.videoUrl
         let playerItem = AVPlayerItem(URL: url)
@@ -139,7 +144,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateBut
         return cell
     }
     
-//    MARK: AVPlayer Methods for CollectionViewCell
+//    MARK: AVPlayer Methods
     
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
@@ -186,20 +191,20 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateBut
     
 //    MARK: Update Button Tint Methods
     
-    func setDefaultTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell) {
+    func updateCellForUnlike(button:UIButton, cell: JBFVinePostCollectionViewCell) {
         
         cell.likeButton.setImage(originalLikeImage, forState: UIControlState.Normal)
         cell.vine?.userHasLiked = false
     }
     
-    func setRedTintForLike(button:UIButton, cell: JBFVinePostCollectionViewCell) {
+    func updateCellForLike(button:UIButton, cell: JBFVinePostCollectionViewCell) {
         
         cell.likeButton.setImage(tintedLikeImage, forState: UIControlState.Normal)
         cell.likeButton.tintColor = UIColor.redColor()
         cell.vine?.userHasLiked = true
     }
     
-    func setPurpleTintForRepost(button:UIButton, cell: JBFVinePostCollectionViewCell) {
+    func updateCellForRepost(button:UIButton, cell: JBFVinePostCollectionViewCell) {
         
         cell.repostButton.setImage(tintedRepostImage, forState: UIControlState.Normal)
         cell.repostButton.tintColor = UIColor.purpleColor()

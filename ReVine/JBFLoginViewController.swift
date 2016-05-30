@@ -28,10 +28,13 @@ class JBFLoginViewController: UIViewController {
             
             if (loggedIn) {
                 
-                self .performSegueWithIdentifier("segueToTimeline", sender: self)
+                self.performSegueWithIdentifier("segueToTimeline", sender: self)
                 
             } else {
-                //error logging in
+                
+                let controller = UIAlertController.alertControllerWithTitle("Error", message: "There was an error logging in.")
+                
+                self.presentViewController(controller, animated: true, completion: nil)
             }
         }
     }
