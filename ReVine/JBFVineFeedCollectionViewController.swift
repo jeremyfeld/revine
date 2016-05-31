@@ -94,7 +94,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateBut
         dateFormatter.dateFormat = "MMM d, yyyy"
         
         cell.vine = vine
-        cell.numberOfLoopsLabel.text = "\(vine.loops)"
+        cell.numberOfLoopsLabel.text = cell.returnFormattedStringFromNumber(vine.loops)
         cell.datePostedLabel.text = dateFormatter.stringFromDate(date)
         cell.usernameLabel.text = vine.username
         cell.titleLabel.text = vine.title
@@ -118,11 +118,13 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, UpdateBut
             
             cell.repostButton.setImage(originalRepostImage, forState: UIControlState.Normal)
         }
-        
-        cell.numberOfLikesLabel.text = "\(vine.likes)"
-        cell.numberOfCommentsLabel.text = "\(vine.comments)"
-        cell.numberOfRepostsLabel.text = "\(vine.reposts)"
+    
+        cell.numberOfLikesLabel.text = cell.returnFormattedStringFromNumber(vine.likes)
+        cell.numberOfCommentsLabel.text = cell.returnFormattedStringFromNumber(vine.comments)
+        cell.numberOfRepostsLabel.text = cell.returnFormattedStringFromNumber(vine.reposts)
         cell.userAvatarImageView.image = vine.userAvatarImage
+        cell.userAvatarImageView.layer.cornerRadius = cell.userAvatarImageView.frame.height/2
+        cell.userAvatarImageView.clipsToBounds = true
         //cell.vineThumbnailImageView.image = vine.vineThumbnailImage
         
         let url = vine.videoUrl

@@ -76,6 +76,12 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    func returnFormattedStringFromNumber(num: NSNumber) -> String {
+        var numberFormatter = NSNumberFormatter()
+        numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
+        return numberFormatter.stringFromNumber(num)!
+    }
+    
     func updateUIForLike(sender: UIButton){
         
         self.updateButtonDelegate.updateCellForLike(sender, cell: self)

@@ -13,9 +13,9 @@ extension UIAlertController {
     
     class func alertControllerWithTitle(title:String, message:String) -> UIAlertController {
         
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         
-        alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         
         return alertController
     }  
