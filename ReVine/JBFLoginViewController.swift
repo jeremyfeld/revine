@@ -15,23 +15,21 @@ class JBFLoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
+    
+        loginButton.layer.cornerRadius = 6
     }
     
     @IBAction func loginButtonTapped(sender: AnyObject) {
         
-        var loginDictionary: [String: String] = ["username": self.emailTextField.text!, "password": self.passwordTextField.text!]
+        let loginParams: [String: String] = ["username": self.emailTextField.text!, "password": self.passwordTextField.text!]
         
-        JBFVineClient.sharedClient().loginWithUserParams(loginDictionary) { (loggedIn) in
+        JBFVineClient.sharedClient().loginWithUserParams(loginParams) { (loggedIn) in
             
             if (loggedIn) {
-                
                 self.performSegueWithIdentifier("segueToTimeline", sender: self)
                 
             } else {
-                
                 let controller = UIAlertController.alertControllerWithTitle("Error", message: "There was an error logging in.")
                 
                 self.presentViewController(controller, animated: true, completion: nil)

@@ -36,7 +36,6 @@
     self = [super init];
     
     if (self) {
-        
         _userTimelineVines = [[NSMutableArray alloc] init];
         _popularVines = [[NSMutableArray alloc] init];
         _nextPage = [[NSMutableString alloc] init];
@@ -51,13 +50,12 @@
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     
     [sessionManager POST:@"https://api.vineapp.com/users/authenticate" parameters:dictionary progress:^(NSProgress * _Nonnull uploadProgress) {
-        //
+        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         BOOL success = responseObject[@"success"];
         
         if (success) {
-            
             self.userKey = responseObject[@"data"][@"key"];
             self.userID = responseObject[@"data"][@"userId"];
             self.username = responseObject[@"data"][@"username"];
@@ -66,9 +64,9 @@
             loggedIn(YES);
             
         } else {
-            
             loggedIn(NO);
         }
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         loggedIn(NO);
@@ -82,22 +80,16 @@
     [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
     
     [sessionManager GET:@"https://api.vineapp.com/timelines/popular" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        //
+        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
-            JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
-            
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    vine.userAvatarImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.userAvatarUrl]];
-                }];
+            if ([vineDict isKindOfClass:[NSDictionary class]]) {
+                JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
                 
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    vine.vineThumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.vineThumbnailUrl]];
-                }];
-
-            [self.popularVines addObject:vine];
+                [self.popularVines addObject:vine];
+            }
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
@@ -119,14 +111,16 @@
     NSString *nextPage = [NSString stringWithFormat:@"https://api.vineapp.com/timelines/popular?page=%@", self.nextPage];
     
     [sessionManager GET:nextPage parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        //
+        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
-            JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
-            
-            [self.popularVines addObject:vine];
+            if ([vineDict isKindOfClass:[NSDictionary class]]) {
+                JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
+                
+                [self.popularVines addObject:vine];
+            }
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
@@ -148,26 +142,20 @@
     NSString *userTimeline = [NSString stringWithFormat:@"https://api.vineapp.com/timelines/users/%@",self.userID];
     
     [sessionManager GET:userTimeline parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        //
+        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
-            JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
-            
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                vine.userAvatarImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.userAvatarUrl]];
-            }];
-            
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                vine.vineThumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:vine.vineThumbnailUrl]];
-            }];
-            
-            [self.userTimelineVines addObject:vine];
+            if ([vineDict isKindOfClass:[NSDictionary class]]) {
+                JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
+                
+                [self.userTimelineVines addObject:vine];
+            }
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
-
+        
         completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -185,7 +173,7 @@
     NSString *postEndpoint = [NSString stringWithFormat:@"https://api.vineapp.com/posts/%@/likes", postID];
     
     [sessionManager POST:postEndpoint parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
-        //
+        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         completion(YES);
@@ -205,7 +193,7 @@
     NSString *postEndpoint = [NSString stringWithFormat:@"https://api.vineapp.com/posts/%@/likes", postID];
     
     [sessionManager DELETE:postEndpoint parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //
+        
         completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -223,7 +211,7 @@
     NSString *postEndpoint = [NSString stringWithFormat:@"https://api.vineapp.com/posts/%@/repost", postID];
     
     [sessionManager POST:postEndpoint parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
-        //
+        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         completion(YES);
@@ -236,10 +224,10 @@
 
 - (void)commentOnPost:(NSString *)postID withSessionID:(NSString *)sessionID withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion
 {
-
+    
 }
 
--(NSString *)returnUserKey
+-(NSString *)currentUserKey
 {
     return self.userKey;
 }
