@@ -187,8 +187,8 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S67-rd-JH8" userLabel="media">
                                                     <rect key="frame" x="0.0" y="100" width="374.5" height="434"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TNl-Ge-hNE">
-                                                            <rect key="frame" x="66.5" y="153" width="240" height="128"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TNl-Ge-hNE">
+                                                            <rect key="frame" x="-1" y="0.0" width="375" height="434"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -273,10 +273,10 @@
                                                             <rect key="frame" x="0.0" y="77" width="244" height="47"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QdQ-fY-vRW">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="41" height="47"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="40.5" height="47"/>
                                                                     <subviews>
-                                                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-Sq-Z5y">
-                                                                            <rect key="frame" x="4.5" y="6" width="30" height="34.5"/>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EnV-Sq-Z5y">
+                                                                            <rect key="frame" x="5.5" y="6" width="29.5" height="34.5"/>
                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                             <state key="normal" title="Button" image="like"/>
                                                                             <connections>
@@ -293,16 +293,16 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="likes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0HG-58-fx5">
-                                                                    <rect key="frame" x="41" y="0.0" width="41" height="47"/>
+                                                                    <rect key="frame" x="40.5" y="0.0" width="41" height="47"/>
                                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                                     <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5i-aU-g6D">
-                                                                    <rect key="frame" x="82" y="0.0" width="41" height="47"/>
+                                                                    <rect key="frame" x="81.5" y="0.0" width="40.5" height="47"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EXJ-y2-9Zq">
-                                                                            <rect key="frame" x="5" y="6" width="30.5" height="35"/>
+                                                                            <rect key="frame" x="5" y="6" width="30" height="35"/>
                                                                             <state key="normal" title="Button" image="comment"/>
                                                                             <connections>
                                                                                 <action selector="commentButtonTapped:" destination="k4h-gr-NJL" eventType="touchUpInside" id="piM-gG-Zz9"/>
@@ -318,13 +318,13 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="comments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k61-dE-B8s">
-                                                                    <rect key="frame" x="122" y="0.0" width="41" height="47"/>
+                                                                    <rect key="frame" x="122" y="0.0" width="40.5" height="47"/>
                                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dvY-so-DA2">
-                                                                    <rect key="frame" x="163" y="0.0" width="41" height="47"/>
+                                                                    <rect key="frame" x="162.5" y="0.0" width="41" height="47"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egl-az-2fo">
                                                                             <rect key="frame" x="5" y="6" width="30.5" height="35"/>
@@ -343,7 +343,7 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="reposts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMG-yC-UcT">
-                                                                    <rect key="frame" x="204" y="0.0" width="41" height="47"/>
+                                                                    <rect key="frame" x="203.5" y="0.0" width="40.5" height="47"/>
                                                                     <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="12"/>
                                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>

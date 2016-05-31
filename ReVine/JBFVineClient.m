@@ -45,7 +45,7 @@
     return self;
 }
 
-- (void)loginWithUserDictionary:(NSDictionary *)dictionary Completion:(void (^)(BOOL))loggedIn
+- (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL))loggedIn
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -75,7 +75,7 @@
     }];
 }
 
-- (void)getPopularVinesWithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
+- (void)getPopularVinesWithSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -102,15 +102,15 @@
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
         
-        completionBlock(YES);
+        completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        completionBlock(NO);
+        completion(NO);
     }];
 }
 
-- (void)getPopularVinesForNextPage:(NSString *)page WithSessionID:(NSString *)sessionID  WithCompletion:(void (^)(BOOL))completionBlock
+- (void)getPopularVinesForNextPage:(NSString *)page withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -131,15 +131,15 @@
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
         
-        completionBlock(YES);
+        completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        completionBlock(NO);
+        completion(NO);
     }];
 }
 
-- (void)getUserTimelineWithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock;
+- (void)getUserTimelineWithSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -168,15 +168,15 @@
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
 
-        completionBlock(YES);
+        completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        completionBlock(NO);
+        completion(NO);
     }];
 }
 
-- (void)likePost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
+- (void)likePost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -188,15 +188,15 @@
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        completionBlock(YES);
+        completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        completionBlock(NO);
+        completion(NO);
     }];
 }
 
-- (void)unlikePost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
+- (void)unlikePost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -206,15 +206,15 @@
     
     [sessionManager DELETE:postEndpoint parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //
-        completionBlock(YES);
+        completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        completionBlock(NO);
+        completion(NO);
     }];
 }
 
-- (void)repost:(NSString *)postID WithSessionID:(NSString *)sessionID WithCompletion:(void (^)(BOOL))completionBlock
+- (void)repost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
 {
     AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
     sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
@@ -226,15 +226,15 @@
         //
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        completionBlock(YES);
+        completion(YES);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        completionBlock(NO);
+        completion(NO);
     }];
 }
 
-- (void)commentOnPost:(NSString *)postID WithSessionID:(NSString *)sessionID WithComment:(NSString *)commentString WithCompletion:(void (^)(BOOL))completionBlock
+- (void)commentOnPost:(NSString *)postID withSessionID:(NSString *)sessionID withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion
 {
 
 }
