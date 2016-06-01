@@ -14,9 +14,12 @@ private let reuseIdentifier = "Cell"
 class JBFVineFeedCollectionViewController: UICollectionViewController {
     
     private var popularVines = JBFVineClient.sharedClient().popularVines
-    private var avPlayer = AVPlayer()
     private var currentCell = JBFVinePostCollectionViewCell()
     private var previousCell = JBFVinePostCollectionViewCell()
+    private var nextCell = JBFVinePostCollectionViewCell()
+    private var offsetForNextCell: CGFloat = CGFloat()
+    private var lastYOffset: CGFloat = 0
+    private var initialIndexPath: UInt = 0
     
     override func viewDidLoad() {
         
@@ -39,7 +42,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
             }
         }
         
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.registerClass(JBFVinePostCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object:currentCell.cellAVPlayer)
     }
@@ -74,13 +77,12 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     //    MARK: AVPlayer Methods
     
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+
+            currentCell = cell as! JBFVinePostCollectionViewCell
+            
+            currentCell.cellAVPlayer!.play()
         
-        //        if indexPath.section == 0 {
-        
-        currentCell = cell as! JBFVinePostCollectionViewCell
-        
-        currentCell.cellAVPlayer!.play()
-        //        }
+            offsetForNextCell = contentOffsetForIndexPath(indexPath)
     }
     
     override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
@@ -90,24 +92,12 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         previousCell.cellAVPlayer!.pause()
     }
     
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
+    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
-        //        for cell in (self.collectionView?.visibleCells())! {
-        //
-        //            let cellToPlay = cell as! JBFVinePostCollectionViewCell
-        //
-        //            cellToPlay.cellAVPlayer!.pause()
-        //        }
-    }
-    
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        
-        //                for cell in (self.collectionView?.visibleCells())! {
-        //
-        //                    self.currentCell = cell as! JBFVinePostCollectionViewCell
-        //
-        //                    self.currentCell.cellAVPlayer!.play()
-        //                }
+        if collectionView?.contentOffset.y > (offsetForNextCell - (view.frame.height/2)) {
+            
+            collectionView?.setContentOffset(CGPointMake(0, offsetForNextCell), animated: true)
+        }
     }
     
     func playerItemDidReachEnd(notification: NSNotification) {
@@ -116,4 +106,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         currentCell.cellAVPlayer!.play()
     }
     
+    private func contentOffsetForIndexPath(indexPath: NSIndexPath) -> CGFloat {
+        return view.frame.height * CGFloat(indexPath.item)
+    }
 }

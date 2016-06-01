@@ -17,14 +17,55 @@
     if (self) {
         _jsonDictionary = jsonDictionary;
         
-        //if length greater than zero, else return nil
-        _videoUrl = [NSURL URLWithString:jsonDictionary[@"videoUrl"]];
-        _username = jsonDictionary[@"username"];
-        _postID = [NSString stringWithFormat:@"%@", jsonDictionary[@"postId"]];
-        _userAvatarUrl = [NSURL URLWithString:jsonDictionary[@"avatarUrl"]];
-        _vineThumbnailUrl = [NSURL URLWithString:jsonDictionary[@"thumbnailUrl"]];
-        _title = jsonDictionary[@"description"];
-        _dateString = jsonDictionary[@"created"];
+        NSString *videoUrl = jsonDictionary[@"videoUrl"];
+        if (videoUrl.length >0) {
+            _videoUrl = [NSURL URLWithString:videoUrl];
+            
+        } else {
+            _videoUrl = nil;
+        }
+        
+        NSString *username = jsonDictionary[@"username"];
+        if (username.length > 0) {
+            _username = username;
+            
+        } else {
+            _username = nil;
+        }
+        
+        if ([jsonDictionary[@"postId"] isKindOfClass:[NSNumber class]]) {
+            _postID = [jsonDictionary[@"postId"] unsignedIntegerValue];
+            
+        } else {
+            _postID = 0;
+        }
+        
+        NSString *avatarUrl = jsonDictionary[@"avatarUrl"];
+        if (avatarUrl.length > 0) {
+            _userAvatarUrl = [NSURL URLWithString:avatarUrl];
+            
+        } else {
+            _userAvatarUrl = nil;
+        }
+        
+//        _vineThumbnailUrl = [NSURL URLWithString:jsonDictionary[@"thumbnailUrl"]];
+        
+        NSString *title = jsonDictionary[@"description"];
+        if (title.length > 0) {
+            _title = title;
+            
+        } else {
+            _title = @" ";
+        }
+        
+        NSString *dateString = jsonDictionary[@"created"];
+        if (dateString.length > 0) {
+            _dateString = dateString;
+            
+        } else {
+            _dateString = nil;
+        }
+
         
         if ([jsonDictionary[@"loops"][@"count"] isKindOfClass:[NSNumber class]]) {
             _loops = [jsonDictionary[@"loops"][@"count"] unsignedIntegerValue];

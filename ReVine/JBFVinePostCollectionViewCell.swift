@@ -76,22 +76,26 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         let date: NSDate! = dateFormatter.dateFromString(vine!.dateString)
         dateFormatter.dateFormat = "MMM d, yyyy"
         
-        numberOfLoopsLabel.text = returnFormattedStringFromNumber(vine!.loops)
+        numberOfLoopsLabel.text = formattedStringFromNumber(vine!.loops)
+        
+        //date could be nil
         datePostedLabel.text = dateFormatter.stringFromDate(date)
+        
+        //could be nil
         usernameLabel.text = vine!.username
+        
         titleLabel.text = vine!.title
-        numberOfLikesLabel.text = returnFormattedStringFromNumber(vine!.likes)
-        numberOfCommentsLabel.text = returnFormattedStringFromNumber(vine!.comments)
-        numberOfRepostsLabel.text = returnFormattedStringFromNumber(vine!.reposts)
+        numberOfLikesLabel.text = formattedStringFromNumber(vine!.likes)
+        numberOfCommentsLabel.text = formattedStringFromNumber(vine!.comments)
+        numberOfRepostsLabel.text = formattedStringFromNumber(vine!.reposts)
         userAvatarImageView.layer.cornerRadius = userAvatarImageView.frame.height/2
         userAvatarImageView.clipsToBounds = true
+        //could be nil
         userAvatarImageView.setImageWithURL(vine!.userAvatarUrl)
-        
-//use afnetowrking to get image
     }
     
     private func setupVideo() {
-        
+        //could be nil
         let url = vine!.videoUrl
         let playerItem = AVPlayerItem(URL: url)
         
@@ -104,17 +108,8 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             let avPlayerLayer = AVPlayerLayer(player: cellAVPlayer)
             mediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
             avPlayerLayer.frame = mediaView.bounds
+            mediaView.layoutSubviews()
         }
-    }
-    
-//    MARK: Audio Methods
-    
-    func playAudio() {
-        
-    }
-    
-    func pauseAudio() {
-        
     }
     
 //    MARK: IBActions
@@ -122,7 +117,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBAction func likeButtonTapped(sender: AnyObject) {
         
         if self.vine!.userHasLiked == true {
-            JBFVineClient.sharedClient().unlikePost(self.vine!.postID, withSessionID:JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
+            JBFVineClient.sharedClient().unlikePost(stringForPostId(vine!.postID), withSessionID:JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
                 
                 if success {
                     self.updateCellForUnlike(self.likeButton)
@@ -130,7 +125,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             })
             
         } else {
-            JBFVineClient.sharedClient().likePost(self.vine!.postID, withSessionID: JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
+            JBFVineClient.sharedClient().likePost(stringForPostId(vine!.postID), withSessionID: JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
                 
                 if success {
                     self.updateCellForLike(self.likeButton)
@@ -147,10 +142,10 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBAction func repostButtonTapped(sender: AnyObject) {
         
         if self.vine!.userHasReposted == true {
-            //already reposted
+            //user has reposted
             
         } else {
-            JBFVineClient.sharedClient().repost(self.vine!.postID, withSessionID: JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
+            JBFVineClient.sharedClient().repost(stringForPostId(vine!.postID), withSessionID: JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
                 
                 if success {
                     self.updateCellForRepost(self.repostButton)
@@ -183,10 +178,14 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     
     //    MARK: Label Formatting Helper
     
-    private func returnFormattedStringFromNumber(num: NSNumber) -> String {
+    private func formattedStringFromNumber(num: NSNumber) -> String {
         
         let numberFormatter = NSNumberFormatter()
         numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
         return numberFormatter.stringFromNumber(num)!
+    }
+    
+    private func stringForPostId(int: UInt) -> String {
+        return "\(int)"
     }
 }
