@@ -32,7 +32,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
                 })
                 
             } else {
-                let controller = UIAlertController.alertControllerWithTitle("Error", message: "There was an error loading the timeline: \(error.localizedDescription)")
+                let controller = UIAlertController.alertControllerWithTitle("Uh-oh!", message: "There was an error loading the timeline: \(error.localizedDescription)")
                 
                 self.presentViewController(controller, animated: true, completion: nil)
             }

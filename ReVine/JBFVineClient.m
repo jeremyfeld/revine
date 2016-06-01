@@ -45,7 +45,7 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
     return self;
 }
 
-- (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL))loggedIn
+- (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL loggedIn, NSError *error))loggedIn
 {
     self.sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     
@@ -60,15 +60,15 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
             self.userID = responseObject[@"data"][@"userId"];
             self.avatarUrlString = responseObject [@"data"][@"avatarUrl"];
             
-            loggedIn(YES);
+            loggedIn(YES, nil);
             
         } else {
-            loggedIn(NO);
+            loggedIn(NO, nil);
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        loggedIn(NO);
+        loggedIn(NO, error);
     }];
 }
 

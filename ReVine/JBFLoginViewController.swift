@@ -24,15 +24,23 @@ class JBFLoginViewController: UIViewController {
         
         let loginParams: [String: String] = ["username": self.emailTextField.text!, "password": self.passwordTextField.text!]
         
-        JBFVineClient.sharedClient().loginWithUserParams(loginParams) { (loggedIn) in
+        JBFVineClient.sharedClient().loginWithUserParams(loginParams) { (loggedIn, error) in
             
             if (loggedIn) {
                 self.performSegueWithIdentifier("segueToTimeline", sender: self)
                 
             } else {
-                let controller = UIAlertController.alertControllerWithTitle("Error", message: "There was an error logging in.")
+                
+                if error != nil {
+                    let controller = UIAlertController.alertControllerWithTitle("Oops!", message: "There was an error logging in: \(error.localizedDescription)")
+                    
+                    self.presentViewController(controller, animated: true, completion: nil)
+                    
+                } else {
+                let controller = UIAlertController.alertControllerWithTitle("Oops!", message: "There was an error logging in.")
                 
                 self.presentViewController(controller, animated: true, completion: nil)
+                }
             }
         }
     }

@@ -16,7 +16,7 @@
 
 + (JBFVineClient *) sharedClient;
 
-- (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL))loggedIn;
+- (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL loggedIn, NSError *error))loggedIn;
 
 - (void)getPopularVinesWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
 - (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
