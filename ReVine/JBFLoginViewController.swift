@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pop
 
 class JBFLoginViewController: UIViewController {
     
@@ -43,5 +44,34 @@ class JBFLoginViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @IBAction func emailEditingDidEnd(sender: AnyObject) {
+        if (emailTextField.text?.characters.count)! > 0 && (emailTextField.text?.characters.contains("@"))! {
+            print("valid email")
+            
+        } else {
+           animateTextField(emailTextField)
+        }
+    }
+    
+    @IBAction func passwordEditingDidEnd(sender: AnyObject) {
+        
+        if (passwordTextField.text?.characters.count)! > 5 {
+            print("valid password")
+            
+        } else {
+            animateTextField(passwordTextField)
+        }
+    }
+    
+    func animateTextField(textField:UITextField) {
+
+        let shake =  POPSpringAnimation(propertyNamed: kPOPLayerPositionX)
+        shake.springBounciness = 20
+        shake.velocity = NSNumber(int: 2500)
+        shake.removedOnCompletion = true
+        textField.layer.pop_addAnimation(shake, forKey: "shakeAnimation")
+
     }
 }

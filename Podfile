@@ -4,6 +4,7 @@ use_frameworks!
 
 target 'ReVine' do
 pod 'AFNetworking', '~> 3.0'
+pod 'pop', '~> 1.0'
 end
 
 target 'ReVineTests' do

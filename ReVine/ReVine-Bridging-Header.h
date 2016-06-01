@@ -5,3 +5,4 @@
 #import "JBFVineClient.h"
 #import "JBFVine.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import <POP/POP.h>
