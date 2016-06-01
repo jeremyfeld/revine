@@ -14,12 +14,13 @@
 @property (nonatomic, strong) NSString *userKey;
 @property (nonatomic, strong) NSString *avatarUrlString;
 @property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
 
 @end
 
 @implementation JBFVineClient
 
-static NSString *const VINE_API_ENDPOINT = @"https://api.vineapp.com";
+static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 
 + (JBFVineClient *)sharedClient
 {
@@ -41,6 +42,7 @@ static NSString *const VINE_API_ENDPOINT = @"https://api.vineapp.com";
         _userTimelineVines = [[NSMutableArray alloc] init];
         _popularVines = [[NSMutableArray alloc] init];
         _nextPage = [[NSMutableString alloc] init];
+        _sessionManager = [AFHTTPSessionManager manager];
     }
     
     return self;
@@ -48,12 +50,11 @@ static NSString *const VINE_API_ENDPOINT = @"https://api.vineapp.com";
 
 - (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL))loggedIn
 {
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-
-    [sessionManager POST:[NSString stringWithFormat:@"%@/users/authenticate", VINE_API_ENDPOINT] parameters:dictionary progress:^(NSProgress * _Nonnull uploadProgress) {
+    self.sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    
+    [self.sessionManager POST:[NSString stringWithFormat:@"%@/users/authenticate", VINE_API_BASE_URL] parameters:dictionary progress:^(NSProgress *uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
         
         BOOL success = responseObject[@"success"];
         
@@ -69,28 +70,28 @@ static NSString *const VINE_API_ENDPOINT = @"https://api.vineapp.com";
             loggedIn(NO);
         }
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         loggedIn(NO);
     }];
 }
 
-- (void)getPopularVinesWithSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
+- (void)getPopularVinesWithCompletion:(void (^)(BOOL))completion
 {
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    [self setJSONSerializerAndUserKey];
     
-    [sessionManager GET:[NSString stringWithFormat:@"%@/timelines/popular", VINE_API_ENDPOINT] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [self.sessionManager GET:[NSString stringWithFormat:@"%@/timelines/popular", VINE_API_BASE_URL] parameters:nil progress:^(NSProgress *downloadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
         
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             if ([vineDict isKindOfClass:[NSDictionary class]]) {
                 JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
                 
-                [self.popularVines addObject:vine];
+                if (vine) {
+                    [self.popularVines addObject:vine];
+                }
             }
         }
         
@@ -98,28 +99,28 @@ static NSString *const VINE_API_ENDPOINT = @"https://api.vineapp.com";
         
         completion(YES);
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         completion(NO);
     }];
 }
 
-- (void)getPopularVinesForNextPage:(NSString *)page withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
+- (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(BOOL))completion
 {
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    [self setJSONSerializerAndUserKey];
     
-    [sessionManager GET:[NSString stringWithFormat:@"%@/timelines/popular?page=%@", VINE_API_ENDPOINT, self.nextPage] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [self.sessionManager GET:[NSString stringWithFormat:@"%@/timelines/popular?page=%@", VINE_API_BASE_URL, self.nextPage] parameters:nil progress:^(NSProgress *downloadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
         
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             if ([vineDict isKindOfClass:[NSDictionary class]]) {
                 JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
                 
-                [self.popularVines addObject:vine];
+                if (vine) {
+                    [self.popularVines addObject:vine];
+                }
             }
         }
         
@@ -127,28 +128,28 @@ static NSString *const VINE_API_ENDPOINT = @"https://api.vineapp.com";
         
         completion(YES);
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         completion(NO);
     }];
 }
 
-- (void)getUserTimelineWithSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
+- (void)getUserTimelineWithCompletion:(void (^)(BOOL))completion;
 {
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    [self setJSONSerializerAndUserKey];
     
-    [sessionManager GET:[NSString stringWithFormat:@"%@/timelines/users/%@", VINE_API_ENDPOINT, self.userID] parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [self.sessionManager GET:[NSString stringWithFormat:@"%@/timelines/users/%@", VINE_API_BASE_URL, self.userID] parameters:nil progress:^(NSProgress *downloadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
         
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             if ([vineDict isKindOfClass:[NSDictionary class]]) {
                 JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
                 
-                [self.userTimelineVines addObject:vine];
+                if (vine) {
+                    [self.userTimelineVines addObject:vine];
+                }
             }
         }
         
@@ -156,72 +157,72 @@ static NSString *const VINE_API_ENDPOINT = @"https://api.vineapp.com";
         
         completion(YES);
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         completion(NO);
     }];
 }
 
-- (void)likePost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
+- (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion
 {
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    [self setJSONSerializerAndUserKey];
     
-    [sessionManager POST:[NSString stringWithFormat:@"%@/posts/%@/likes", VINE_API_ENDPOINT, postID] parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [self.sessionManager POST:[NSString stringWithFormat:@"%@/posts/%@/likes", VINE_API_BASE_URL, [self postIDForVine:vine]] parameters:nil progress:^(NSProgress *uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
         
         completion(YES);
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         completion(NO);
     }];
 }
 
-- (void)unlikePost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
+- (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion
 {
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    [self setJSONSerializerAndUserKey];
     
-    [sessionManager DELETE:[NSString stringWithFormat:@"%@/posts/%@/likes", VINE_API_ENDPOINT, postID] parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [self.sessionManager DELETE:[NSString stringWithFormat:@"%@/posts/%@/likes", VINE_API_BASE_URL, [self postIDForVine:vine]] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         
         completion(YES);
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         completion(NO);
     }];
 }
 
-- (void)repost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion
+- (void)repost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion
 {
-    AFHTTPSessionManager *sessionManager = [AFHTTPSessionManager manager];
-    sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [sessionManager.requestSerializer setValue:sessionID forHTTPHeaderField:@"vine-session-id"];
+    [self setJSONSerializerAndUserKey];
     
-    [sessionManager POST:[NSString stringWithFormat:@"%@/posts/%@/repost", VINE_API_ENDPOINT, postID] parameters:nil progress:^(NSProgress * _Nonnull uploadProgress) {
+    [self.sessionManager POST:[NSString stringWithFormat:@"%@/posts/%@/repost", VINE_API_BASE_URL, [self postIDForVine:vine]] parameters:nil progress:^(NSProgress *uploadProgress) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    } success:^(NSURLSessionDataTask *task, id responseObject) {
         
         completion(YES);
         
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         completion(NO);
     }];
 }
 
-- (void)commentOnPost:(NSString *)postID withSessionID:(NSString *)sessionID withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion
+- (void)commentOnPost:(JBFVine *)vine withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion
 {
     
 }
 
--(NSString *)currentUserKey
+- (void)setJSONSerializerAndUserKey
 {
-    return self.userKey;
+    self.sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
+    [self.sessionManager.requestSerializer setValue:self.userKey forHTTPHeaderField:@"vine-session-id"];
+}
+
+- (NSString *)postIDForVine:(JBFVine *)vine
+{
+    return [NSString stringWithFormat:@"%lu", (unsigned long)vine.postID];
 }
 
 @end

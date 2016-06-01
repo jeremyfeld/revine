@@ -18,11 +18,11 @@
         _jsonDictionary = jsonDictionary;
         
         NSString *videoUrl = jsonDictionary[@"videoUrl"];
-        if (videoUrl.length >0) {
+        if (videoUrl.length > 0) {
             _videoUrl = [NSURL URLWithString:videoUrl];
             
         } else {
-            _videoUrl = nil;
+            return nil;
         }
         
         NSString *username = jsonDictionary[@"username"];
@@ -30,14 +30,14 @@
             _username = username;
             
         } else {
-            _username = nil;
+            return nil;
         }
         
         if ([jsonDictionary[@"postId"] isKindOfClass:[NSNumber class]]) {
             _postID = [jsonDictionary[@"postId"] unsignedIntegerValue];
             
         } else {
-            _postID = 0;
+            return nil;
         }
         
         NSString *avatarUrl = jsonDictionary[@"avatarUrl"];
@@ -45,10 +45,8 @@
             _userAvatarUrl = [NSURL URLWithString:avatarUrl];
             
         } else {
-            _userAvatarUrl = nil;
+            return nil;
         }
-        
-//        _vineThumbnailUrl = [NSURL URLWithString:jsonDictionary[@"thumbnailUrl"]];
         
         NSString *title = jsonDictionary[@"description"];
         if (title.length > 0) {
@@ -63,9 +61,9 @@
             _dateString = dateString;
             
         } else {
-            _dateString = nil;
+            return nil;
         }
-
+        
         
         if ([jsonDictionary[@"loops"][@"count"] isKindOfClass:[NSNumber class]]) {
             _loops = [jsonDictionary[@"loops"][@"count"] unsignedIntegerValue];
@@ -94,7 +92,7 @@
         } else {
             _reposts = 0;
         }
-   
+        
         if ([jsonDictionary[@"liked"] isKindOfClass:[NSNumber class]]) {
             _userHasLiked = [jsonDictionary[@"liked"] boolValue];
             

@@ -16,7 +16,6 @@
 @property (nonatomic, strong) NSString *dateString;
 @property (nonatomic, strong) NSURL *videoUrl;
 @property (nonatomic, strong) NSURL *userAvatarUrl;
-@property (nonatomic, strong) NSURL *vineThumbnailUrl;
 @property (nonatomic, strong) UIImage *userAvatarImage;
 @property (nonatomic, strong) UIImage *vineThumbnailImage;
 @property (nonatomic, assign) NSUInteger postID;

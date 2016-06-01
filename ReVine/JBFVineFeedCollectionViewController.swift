@@ -9,17 +9,13 @@
 import UIKit
 import AVFoundation
 
-private let reuseIdentifier = "Cell"
+private let reuseIdentifier = "vinePostCellReuseId"
 
 class JBFVineFeedCollectionViewController: UICollectionViewController {
     
-    private var popularVines = JBFVineClient.sharedClient().popularVines
     private var currentCell = JBFVinePostCollectionViewCell()
     private var previousCell = JBFVinePostCollectionViewCell()
-    private var nextCell = JBFVinePostCollectionViewCell()
     private var offsetForNextCell: CGFloat = CGFloat()
-    private var lastYOffset: CGFloat = 0
-    private var initialIndexPath: UInt = 0
     
     override func viewDidLoad() {
         
@@ -28,7 +24,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         let layout = collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: view.frame.width, height: view.frame.height)
         
-        JBFVineClient.sharedClient().getPopularVinesWithSessionID(JBFVineClient.sharedClient().currentUserKey()) { (success) in
+        JBFVineClient.sharedClient().getPopularVinesWithCompletion { (success) in
             
             if (success) {
                 NSOperationQueue.mainQueue().addOperationWithBlock({
@@ -47,12 +43,32 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object:currentCell.cellAVPlayer)
     }
     
-    //     MARK: UICollectionViewDataSource
+    //MARK: - UICollectionViewDataSource
     
     private func vineForIndexPath(indexPath: NSIndexPath) -> JBFVine {
         
-        return popularVines[indexPath.item] as! JBFVine
+        return JBFVineClient.sharedClient().popularVines[indexPath.item] as! JBFVine
     }
+    
+    //MARK: - AVPlayer Methods
+    
+    func playerItemDidReachEnd(notification: NSNotification) {
+        
+        currentCell.cellAVPlayer!.seekToTime(kCMTimeZero)
+        currentCell.cellAVPlayer!.play()
+    }
+    
+    //MARK: - Helper Methods
+    
+    private func contentOffsetForIndexPath(indexPath: NSIndexPath) -> CGFloat {
+        
+        return view.frame.height * CGFloat(indexPath.item)
+    }
+}
+
+//MARK: - UICollectionViewDataSource
+
+extension JBFVineFeedCollectionViewController {
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         
@@ -73,40 +89,31 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         
         return cell
     }
-    
-    //    MARK: AVPlayer Methods
+}
+
+//MARK: - UICollectionViewDelegate
+
+extension JBFVineFeedCollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-
-            currentCell = cell as! JBFVinePostCollectionViewCell
-            
-            currentCell.cellAVPlayer!.play()
         
-            offsetForNextCell = contentOffsetForIndexPath(indexPath)
+        currentCell = cell as! JBFVinePostCollectionViewCell
+        currentCell.cellAVPlayer!.play()
+        
+        offsetForNextCell = contentOffsetForIndexPath(indexPath)
     }
     
     override func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
         previousCell = cell as! JBFVinePostCollectionViewCell
-        
         previousCell.cellAVPlayer!.pause()
     }
     
     override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
-        if collectionView?.contentOffset.y > (offsetForNextCell - (view.frame.height/2)) {
+        if collectionView?.contentOffset.y > (offsetForNextCell - (view.frame.height / 2)) {
             
             collectionView?.setContentOffset(CGPointMake(0, offsetForNextCell), animated: true)
         }
-    }
-    
-    func playerItemDidReachEnd(notification: NSNotification) {
-        
-        currentCell.cellAVPlayer!.seekToTime(kCMTimeZero)
-        currentCell.cellAVPlayer!.play()
-    }
-    
-    private func contentOffsetForIndexPath(indexPath: NSIndexPath) -> CGFloat {
-        return view.frame.height * CGFloat(indexPath.item)
     }
 }

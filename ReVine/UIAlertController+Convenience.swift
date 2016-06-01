@@ -18,5 +18,5 @@ extension UIAlertController {
         alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
         
         return alertController
-    }  
+    }
 }

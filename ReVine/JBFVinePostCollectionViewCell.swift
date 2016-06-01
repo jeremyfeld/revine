@@ -41,7 +41,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         }
     }
     
-//    MARK: Cell Setup
+    //MARK: - Cell Setup
     
     private func setupLikeButton() {
         
@@ -59,7 +59,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     private func setupRepostButton() {
         
         tintedRepostImage = (originalRepostImage!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate))
-
+        
         if vine!.userHasReposted {
             repostButton.setImage(tintedLikeImage, forState: UIControlState.Normal)
             repostButton.tintColor = UIColor.purpleColor()
@@ -76,26 +76,22 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         let date: NSDate! = dateFormatter.dateFromString(vine!.dateString)
         dateFormatter.dateFormat = "MMM d, yyyy"
         
-        numberOfLoopsLabel.text = formattedStringFromNumber(vine!.loops)
-        
-        //date could be nil
+        usernameLabel.text = vine!.username
+        titleLabel.text = vine!.title
         datePostedLabel.text = dateFormatter.stringFromDate(date)
         
-        //could be nil
-        usernameLabel.text = vine!.username
-        
-        titleLabel.text = vine!.title
+        numberOfLoopsLabel.text = formattedStringFromNumber(vine!.loops)
         numberOfLikesLabel.text = formattedStringFromNumber(vine!.likes)
         numberOfCommentsLabel.text = formattedStringFromNumber(vine!.comments)
         numberOfRepostsLabel.text = formattedStringFromNumber(vine!.reposts)
+        
         userAvatarImageView.layer.cornerRadius = userAvatarImageView.frame.height/2
         userAvatarImageView.clipsToBounds = true
-        //could be nil
         userAvatarImageView.setImageWithURL(vine!.userAvatarUrl)
     }
     
     private func setupVideo() {
-        //could be nil
+        
         let url = vine!.videoUrl
         let playerItem = AVPlayerItem(URL: url)
         
@@ -112,12 +108,12 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         }
     }
     
-//    MARK: IBActions
+    //MARK: - IBActions
     
     @IBAction func likeButtonTapped(sender: AnyObject) {
         
         if self.vine!.userHasLiked == true {
-            JBFVineClient.sharedClient().unlikePost(stringForPostId(vine!.postID), withSessionID:JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
+            JBFVineClient.sharedClient().unlikePost(vine!, withCompletion: { (success) in
                 
                 if success {
                     self.updateCellForUnlike(self.likeButton)
@@ -125,7 +121,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             })
             
         } else {
-            JBFVineClient.sharedClient().likePost(stringForPostId(vine!.postID), withSessionID: JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
+            JBFVineClient.sharedClient().likePost(vine!, withCompletion: { (success) in
                 
                 if success {
                     self.updateCellForLike(self.likeButton)
@@ -145,7 +141,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             //user has reposted
             
         } else {
-            JBFVineClient.sharedClient().repost(stringForPostId(vine!.postID), withSessionID: JBFVineClient.sharedClient().currentUserKey(), withCompletion: { (success) in
+            JBFVineClient.sharedClient().repost(vine!, withCompletion: { (success) in
                 
                 if success {
                     self.updateCellForRepost(self.repostButton)
@@ -154,7 +150,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         }
     }
     
-//    MARK: Update UI Methods
+    //MARK: - Update UI Methods
     
     private func updateCellForUnlike(button:UIButton) {
         
@@ -176,16 +172,12 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
         vine!.userHasReposted = true
     }
     
-    //    MARK: Label Formatting Helper
+    //MARK: - Label Formatting Helper
     
     private func formattedStringFromNumber(num: NSNumber) -> String {
         
         let numberFormatter = NSNumberFormatter()
         numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
         return numberFormatter.stringFromNumber(num)!
-    }
-    
-    private func stringForPostId(int: UInt) -> String {
-        return "\(int)"
     }
 }

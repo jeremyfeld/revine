@@ -20,18 +20,16 @@
 
 - (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL))loggedIn;
 
-- (void)getPopularVinesWithSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
-- (void)getPopularVinesForNextPage:(NSString *)page withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
+- (void)getPopularVinesWithCompletion:(void (^)(BOOL))completion;
+- (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(BOOL))completion;
 
-- (void)getUserTimelineWithSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
+- (void)getUserTimelineWithCompletion:(void (^)(BOOL))completion;
 
-- (void)likePost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
-- (void)unlikePost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
+- (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;
+- (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;
 
-- (void)repost:(NSString *)postID withSessionID:(NSString *)sessionID withCompletion:(void (^)(BOOL))completion;
+- (void)repost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;
 
-- (void)commentOnPost:(NSString *)postID withSessionID:(NSString *)sessionID withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion;
-
-- (NSString *)currentUserKey;
+- (void)commentOnPost:(JBFVine *)vine withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion;
 
 @end
