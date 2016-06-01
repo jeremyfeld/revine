@@ -165,18 +165,7 @@
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S67-rd-JH8" userLabel="media">
                                                     <rect key="frame" x="0.0" y="100" width="374.5" height="434"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TNl-Ge-hNE">
-                                                            <rect key="frame" x="-1" y="0.0" width="375" height="434"/>
-                                                        </imageView>
-                                                    </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstItem="TNl-Ge-hNE" firstAttribute="centerY" secondItem="S67-rd-JH8" secondAttribute="centerY" id="7mF-6X-QAq"/>
-                                                        <constraint firstItem="TNl-Ge-hNE" firstAttribute="width" secondItem="S67-rd-JH8" secondAttribute="width" id="8mx-e9-67T"/>
-                                                        <constraint firstItem="TNl-Ge-hNE" firstAttribute="centerX" secondItem="S67-rd-JH8" secondAttribute="centerX" id="l6g-PG-Flx"/>
-                                                        <constraint firstItem="TNl-Ge-hNE" firstAttribute="height" secondItem="S67-rd-JH8" secondAttribute="height" id="oLR-g8-SSI"/>
-                                                    </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BlC-aM-fYT" userLabel="header">
                                                     <rect key="frame" x="0.0" y="0.0" width="374.5" height="100"/>
@@ -389,7 +378,6 @@
                                     <outlet property="titleLabel" destination="Zke-23-ncJ" id="79l-rS-UlI"/>
                                     <outlet property="userAvatarImageView" destination="QMe-cf-VGq" id="4us-r6-q2c"/>
                                     <outlet property="usernameLabel" destination="rSk-9x-cUM" id="PYj-hs-Qvr"/>
-                                    <outlet property="vineThumbnailImageView" destination="TNl-Ge-hNE" id="IVF-LK-F5p"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

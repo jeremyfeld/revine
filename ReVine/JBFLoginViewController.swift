@@ -17,7 +17,7 @@ class JBFLoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginButton.layer.cornerRadius = 6
+        loginButton.layer.cornerRadius = 5
     }
     
     @IBAction func loginButtonTapped(sender: AnyObject) {

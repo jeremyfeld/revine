@@ -64,7 +64,6 @@
             return nil;
         }
         
-        
         if ([jsonDictionary[@"loops"][@"count"] isKindOfClass:[NSNumber class]]) {
             _loops = [jsonDictionary[@"loops"][@"count"] unsignedIntegerValue];
             

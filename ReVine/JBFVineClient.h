@@ -6,10 +6,9 @@
 //  Copyright © 2016 JBF. All rights reserved.
 //
 
-#import <AFNetworking/AFNetworking.h>
 #import <Foundation/Foundation.h>
-#import "JBFVine.h"
 
+@class JBFVine;
 @interface JBFVineClient : NSObject
 
 @property (nonatomic, strong) NSMutableArray <JBFVine *> *userTimelineVines;

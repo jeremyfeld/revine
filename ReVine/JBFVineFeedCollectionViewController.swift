@@ -66,7 +66,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     }
 }
 
-//MARK: - UICollectionViewDataSource
+    //MARK: - UICollectionViewDataSource
 
 extension JBFVineFeedCollectionViewController {
     
@@ -91,7 +91,7 @@ extension JBFVineFeedCollectionViewController {
     }
 }
 
-//MARK: - UICollectionViewDelegate
+    //MARK: - UICollectionViewDelegate
 
 extension JBFVineFeedCollectionViewController {
     
