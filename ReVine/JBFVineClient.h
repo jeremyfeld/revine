@@ -12,18 +12,16 @@
 
 @interface JBFVineClient : NSObject
 
-@property (nonatomic, strong) NSMutableArray <JBFVine *> *userTimelineVines;
-@property (nonatomic, strong) NSMutableArray <JBFVine *> *popularVines;
 @property (nonatomic, strong) NSMutableString *nextPage;
 
 + (JBFVineClient *) sharedClient;
 
 - (void)loginWithUserParams:(NSDictionary *)dictionary completion:(void (^)(BOOL))loggedIn;
 
-- (void)getPopularVinesWithCompletion:(void (^)(BOOL))completion;
-- (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(BOOL))completion;
+- (void)getPopularVinesWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
+- (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
 
-- (void)getUserTimelineWithCompletion:(void (^)(BOOL))completion;
+- (void)getUserTimelineWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
 
 - (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;
 - (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;

@@ -13,7 +13,6 @@
 @property (nonatomic, strong) NSString *userID;
 @property (nonatomic, strong) NSString *userKey;
 @property (nonatomic, strong) NSString *avatarUrlString;
-@property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
 
 @end
@@ -39,8 +38,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
     self = [super init];
     
     if (self) {
-        _userTimelineVines = [[NSMutableArray alloc] init];
-        _popularVines = [[NSMutableArray alloc] init];
         _nextPage = [[NSMutableString alloc] init];
         _sessionManager = [AFHTTPSessionManager manager];
     }
@@ -61,7 +58,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
         if (success) {
             self.userKey = responseObject[@"data"][@"key"];
             self.userID = responseObject[@"data"][@"userId"];
-            self.username = responseObject[@"data"][@"username"];
             self.avatarUrlString = responseObject [@"data"][@"avatarUrl"];
             
             loggedIn(YES);
@@ -76,7 +72,7 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
     }];
 }
 
-- (void)getPopularVinesWithCompletion:(void (^)(BOOL))completion
+- (void)getPopularVinesWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion
 {
     [self setJSONSerializerAndUserKey];
     
@@ -84,28 +80,29 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         
+        NSMutableArray *vines = [[NSMutableArray alloc] init];
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             if ([vineDict isKindOfClass:[NSDictionary class]]) {
                 JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
                 
                 if (vine) {
-                    [self.popularVines addObject:vine];
+                    [vines addObject:vine];
                 }
             }
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
         
-        completion(YES);
+        completion(vines, nil);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        completion(NO);
+        completion(nil, error);
     }];
 }
 
-- (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(BOOL))completion
+- (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion
 {
     [self setJSONSerializerAndUserKey];
     
@@ -113,28 +110,29 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         
+        NSMutableArray *vines = [[NSMutableArray alloc] init];
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             if ([vineDict isKindOfClass:[NSDictionary class]]) {
                 JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
                 
                 if (vine) {
-                    [self.popularVines addObject:vine];
+                    [vines addObject:vine];
                 }
             }
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
         
-        completion(YES);
+        completion(vines, nil);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        completion(NO);
+        completion(nil, error);
     }];
 }
 
-- (void)getUserTimelineWithCompletion:(void (^)(BOOL))completion;
+- (void)getUserTimelineWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
 {
     [self setJSONSerializerAndUserKey];
     
@@ -142,24 +140,25 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         
+        NSMutableArray *vines = [[NSMutableArray alloc] init];
         for (NSDictionary *vineDict in responseObject[@"data"][@"records"]) {
             
             if ([vineDict isKindOfClass:[NSDictionary class]]) {
                 JBFVine *vine = [[JBFVine alloc] initWithDictionary:vineDict];
                 
                 if (vine) {
-                    [self.userTimelineVines addObject:vine];
+                    [vines addObject:vine];
                 }
             }
         }
         
         self.nextPage = responseObject[@"data"][@"nextPage"];
         
-        completion(YES);
+        completion(vines, nil);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        completion(NO);
+        completion(nil, error);
     }];
 }
 

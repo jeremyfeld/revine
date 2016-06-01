@@ -16,25 +16,28 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     private var currentCell = JBFVinePostCollectionViewCell()
     private var previousCell = JBFVinePostCollectionViewCell()
     private var offsetForNextCell: CGFloat = CGFloat()
+    private var vines: [JBFVine] = []
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        JBFVineClient.sharedClient().getPopularVinesWithCompletion { (success) in
+        JBFVineClient.sharedClient().getPopularVinesWithCompletion { (array, error) in
             
-            if (success) {
+            if array.count > 0 && error == nil {
+                self.vines = array
+                
                 NSOperationQueue.mainQueue().addOperationWithBlock({
                     self.collectionView?.reloadData()
                 })
                 
             } else {
-                let controller = UIAlertController.alertControllerWithTitle("Error", message: "There was an error loading the timeline")
+                let controller = UIAlertController.alertControllerWithTitle("Error", message: "There was an error loading the timeline: \(error.localizedDescription)")
                 
                 self.presentViewController(controller, animated: true, completion: nil)
             }
         }
-        
+
         self.collectionView!.registerClass(JBFVinePostCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object:currentCell.cellAVPlayer)
@@ -44,7 +47,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
     
     private func vineForIndexPath(indexPath: NSIndexPath) -> JBFVine {
         
-        return JBFVineClient.sharedClient().popularVines[indexPath.item] as! JBFVine
+        return vines[indexPath.item]
     }
     
     //MARK: - AVPlayer Methods
@@ -73,8 +76,8 @@ extension JBFVineFeedCollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return JBFVineClient.sharedClient().popularVines.count
+
+        return vines.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -114,6 +117,8 @@ extension JBFVineFeedCollectionViewController {
         }
     }
 }
+
+    //MARK: - UICollectionViewDelegateFlowLayout
 
 extension JBFVineFeedCollectionViewController : UICollectionViewDelegateFlowLayout {
     
