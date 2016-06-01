@@ -8,6 +8,7 @@
 
 #import "JBFVineClient.h"
 
+@class JBFVine;
 @interface JBFVineClient ()
 
 @property (nonatomic, strong) NSString *userID;

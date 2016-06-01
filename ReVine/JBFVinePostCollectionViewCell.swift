@@ -104,7 +104,6 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             let avPlayerLayer = AVPlayerLayer(player: cellAVPlayer)
             mediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
             avPlayerLayer.frame = mediaView.bounds
-            mediaView.layoutSubviews()
         }
     }
     

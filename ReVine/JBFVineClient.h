@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking/AFNetworking.h>
+#import "JBFVine.h"
 
-@class JBFVine;
 @interface JBFVineClient : NSObject
 
 @property (nonatomic, strong) NSMutableArray <JBFVine *> *userTimelineVines;

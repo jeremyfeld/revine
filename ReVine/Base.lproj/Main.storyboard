@@ -250,6 +250,9 @@
                                                                                 <constraint firstAttribute="width" secondItem="EnV-Sq-Z5y" secondAttribute="height" multiplier="1:1" id="10f-Ly-K10"/>
                                                                             </constraints>
                                                                             <state key="normal" title="Button" image="like"/>
+                                                                            <variation key="widthClass=compact" misplaced="YES">
+                                                                                <rect key="frame" x="9" y="11" width="24.5" height="24.5"/>
+                                                                            </variation>
                                                                             <connections>
                                                                                 <action selector="likeButtonTapped:" destination="k4h-gr-NJL" eventType="touchUpInside" id="itp-Np-Bje"/>
                                                                             </connections>
