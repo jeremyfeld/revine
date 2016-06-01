@@ -171,10 +171,10 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="374.5" height="100"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QMe-cf-VGq">
-                                                            <rect key="frame" x="10" y="12.5" width="75" height="75"/>
+                                                            <rect key="frame" x="10" y="25" width="50" height="50"/>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Pb1-mC-XH7">
-                                                            <rect key="frame" x="90" y="25" width="169" height="50"/>
+                                                            <rect key="frame" x="65" y="25" width="169" height="50"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rSk-9x-cUM">
                                                                     <rect key="frame" x="0.0" y="0.0" width="169" height="25"/>
@@ -216,7 +216,7 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstItem="QMe-cf-VGq" firstAttribute="width" secondItem="BlC-aM-fYT" secondAttribute="height" multiplier="0.75" id="Bo0-dt-UWs"/>
+                                                        <constraint firstItem="QMe-cf-VGq" firstAttribute="width" secondItem="BlC-aM-fYT" secondAttribute="height" multiplier="0.5" id="Bo0-dt-UWs"/>
                                                         <constraint firstItem="QMe-cf-VGq" firstAttribute="leading" secondItem="BlC-aM-fYT" secondAttribute="leading" constant="10" id="Cyx-Y6-zgQ"/>
                                                         <constraint firstItem="QMe-cf-VGq" firstAttribute="centerY" secondItem="BlC-aM-fYT" secondAttribute="centerY" id="EYe-Fl-wPG"/>
                                                         <constraint firstItem="qlc-eP-fI4" firstAttribute="width" secondItem="BlC-aM-fYT" secondAttribute="width" multiplier="0.25" id="HZl-PM-Jpb"/>
@@ -224,7 +224,7 @@
                                                         <constraint firstItem="qlc-eP-fI4" firstAttribute="centerY" secondItem="BlC-aM-fYT" secondAttribute="centerY" id="dcN-bc-zca"/>
                                                         <constraint firstItem="Pb1-mC-XH7" firstAttribute="centerY" secondItem="BlC-aM-fYT" secondAttribute="centerY" id="nxd-zl-Qf0"/>
                                                         <constraint firstItem="Pb1-mC-XH7" firstAttribute="width" secondItem="BlC-aM-fYT" secondAttribute="width" multiplier="0.45" id="o2W-3h-cdN"/>
-                                                        <constraint firstItem="QMe-cf-VGq" firstAttribute="height" secondItem="BlC-aM-fYT" secondAttribute="height" multiplier="0.75" id="scP-6t-Uwg"/>
+                                                        <constraint firstItem="QMe-cf-VGq" firstAttribute="height" secondItem="BlC-aM-fYT" secondAttribute="height" multiplier="0.5" id="scP-6t-Uwg"/>
                                                         <constraint firstItem="Pb1-mC-XH7" firstAttribute="leading" secondItem="QMe-cf-VGq" secondAttribute="trailing" constant="5" id="yWc-lP-tcV"/>
                                                     </constraints>
                                                 </view>

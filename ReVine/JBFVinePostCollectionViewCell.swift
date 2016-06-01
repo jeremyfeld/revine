@@ -31,6 +31,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     private var tintedLikeImage = UIImage()
     private var tintedRepostImage = UIImage()
     
+    let avPlayerLayer = AVPlayerLayer()
     var cellAVPlayer: AVPlayer?
     var vine: JBFVine? {
         didSet {
@@ -99,12 +100,20 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             cellAVPlayer!.replaceCurrentItemWithPlayerItem(playerItem)
             
         } else {
-            cellAVPlayer = AVPlayer(playerItem: playerItem)
+            avPlayerLayer.videoGravity = kCAGravityResizeAspectFill
             
-            let avPlayerLayer = AVPlayerLayer(player: cellAVPlayer)
-            mediaView.layer.insertSublayer(avPlayerLayer, atIndex: 0)
-            avPlayerLayer.frame = mediaView.bounds
+            cellAVPlayer = AVPlayer(playerItem: playerItem)
+            avPlayerLayer.player = cellAVPlayer
+    
+            mediaView.layer.addSublayer(avPlayerLayer)
         }
+    }
+    
+    override func layoutSublayersOfLayer(layer: CALayer) {
+        
+        super.layoutSublayersOfLayer(layer)
+        
+        avPlayerLayer.frame = mediaView.bounds
     }
     
     //MARK: - IBActions

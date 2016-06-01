@@ -21,9 +21,6 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         
         super.viewDidLoad()
         
-        let layout = collectionViewLayout as! UICollectionViewFlowLayout
-        layout.itemSize = CGSize(width: view.frame.width, height: view.frame.height)
-        
         JBFVineClient.sharedClient().getPopularVinesWithCompletion { (success) in
             
             if (success) {
@@ -115,5 +112,15 @@ extension JBFVineFeedCollectionViewController {
             
             collectionView?.setContentOffset(CGPointMake(0, offsetForNextCell), animated: true)
         }
+    }
+}
+
+extension JBFVineFeedCollectionViewController : UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                               sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        return CGSizeMake(view.bounds.size.width, view.bounds.size.height)
     }
 }
