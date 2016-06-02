@@ -30,6 +30,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     private let originalRepostImage = UIImage(named: "repost")
     private var tintedLikeImage = UIImage()
     private var tintedRepostImage = UIImage()
+    weak var delegate: ErrorAlertProtocol?
     
     let avPlayerLayer = AVPlayerLayer()
     var cellAVPlayer: AVPlayer?
@@ -104,7 +105,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             
             cellAVPlayer = AVPlayer(playerItem: playerItem)
             avPlayerLayer.player = cellAVPlayer
-    
+            
             mediaView.layer.addSublayer(avPlayerLayer)
         }
     }
@@ -121,18 +122,28 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBAction func likeButtonTapped(sender: AnyObject) {
         
         if self.vine!.userHasLiked == true {
-            JBFVineClient.sharedClient().unlikePost(vine!, withCompletion: { (success) in
+            JBFVineClient.sharedClient().unlikePost(vine!, withCompletion: { (success, error) in
                 
-                if success {
+                if success && error == nil {
                     self.updateCellForUnlike(self.likeButton)
+                    
+                } else {
+                    if error != nil {
+                        //send error to VC
+                    }
                 }
             })
             
         } else {
-            JBFVineClient.sharedClient().likePost(vine!, withCompletion: { (success) in
+            JBFVineClient.sharedClient().likePost(vine!, withCompletion: { (success, error) in
                 
                 if success {
                     self.updateCellForLike(self.likeButton)
+                    
+                } else {
+                    if error != nil {
+                        self.delegate?.displayAlertForError(error)
+                    }
                 }
             })
         }
@@ -149,10 +160,15 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
             //user has reposted
             
         } else {
-            JBFVineClient.sharedClient().repost(vine!, withCompletion: { (success) in
+            JBFVineClient.sharedClient().repost(vine!, withCompletion: { (success, error) in
                 
-                if success {
+                if success && error == nil {
                     self.updateCellForRepost(self.repostButton)
+                    
+                } else {
+                    if error != nil {
+                        self.delegate?.displayAlertForError(error)
+                    }
                 }
             })
         }

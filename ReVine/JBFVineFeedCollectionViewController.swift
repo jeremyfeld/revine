@@ -10,8 +10,12 @@ import UIKit
 import AVFoundation
 
 private let reuseIdentifier = "vinePostCellReuseId"
+protocol ErrorAlertProtocol: class {
+    
+    func displayAlertForError(error:NSError)
+}
 
-class JBFVineFeedCollectionViewController: UICollectionViewController {
+class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAlertProtocol {
     
     private var currentCell = JBFVinePostCollectionViewCell()
     private var previousCell = JBFVinePostCollectionViewCell()
@@ -64,6 +68,15 @@ class JBFVineFeedCollectionViewController: UICollectionViewController {
         
         return view.frame.height * CGFloat(indexPath.item)
     }
+    
+    //MARK: - ErrorAlertProtocol
+    
+    func displayAlertForError(error: NSError) {
+        
+        let controller = UIAlertController.alertControllerWithTitle("Oops!", message: "There was an error: \(error.localizedDescription)")
+        
+        presentViewController(controller, animated: true, completion: nil)
+    }
 }
 
     //MARK: - UICollectionViewDataSource
@@ -83,6 +96,8 @@ extension JBFVineFeedCollectionViewController {
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("JBFVinePostCollectionViewCell", forIndexPath: indexPath) as! JBFVinePostCollectionViewCell
+        
+        cell.delegate = self
         
         let vine = vineForIndexPath(indexPath)
         cell.vine = vine

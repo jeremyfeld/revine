@@ -162,7 +162,7 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
     }];
 }
 
-- (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion
+- (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
     [self setJSONSerializerAndUserKey];
     
@@ -170,29 +170,29 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         
-        completion(YES);
+        completion(YES, nil);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        completion(NO);
+        completion(NO, error);
     }];
 }
 
-- (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion
+- (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
     [self setJSONSerializerAndUserKey];
     
     [self.sessionManager DELETE:[NSString stringWithFormat:@"%@/posts/%@/likes", VINE_API_BASE_URL, [self postIDForVine:vine]] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         
-        completion(YES);
+        completion(YES, nil);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        completion(NO);
+        completion(NO, error);
     }];
 }
 
-- (void)repost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion
+- (void)repost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
     [self setJSONSerializerAndUserKey];
     
@@ -200,15 +200,15 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
         
-        completion(YES);
+        completion(YES, nil);
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
-        completion(NO);
+        completion(NO, error);
     }];
 }
 
-- (void)commentOnPost:(JBFVine *)vine withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion
+- (void)commentOnPost:(JBFVine *)vine withComment:(NSString *)commentString withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
     
 }

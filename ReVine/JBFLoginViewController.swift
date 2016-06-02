@@ -16,6 +16,7 @@ class JBFLoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         loginButton.layer.cornerRadius = 5
@@ -47,20 +48,15 @@ class JBFLoginViewController: UIViewController {
     }
     
     @IBAction func emailEditingDidEnd(sender: AnyObject) {
-        if (emailTextField.text?.characters.count)! > 0 && (emailTextField.text?.characters.contains("@"))! {
-            print("valid email")
-            
-        } else {
+        
+        if (emailTextField.text?.characters.count)! < 3 || !(emailTextField.text?.characters.contains("@"))! {
            animateTextField(emailTextField)
         }
     }
     
     @IBAction func passwordEditingDidEnd(sender: AnyObject) {
         
-        if (passwordTextField.text?.characters.count)! > 5 {
-            print("valid password")
-            
-        } else {
+        if (passwordTextField.text?.characters.count)! < 6 {
             animateTextField(passwordTextField)
         }
     }

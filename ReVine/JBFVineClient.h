@@ -23,11 +23,11 @@
 
 - (void)getUserTimelineWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
 
-- (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;
-- (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;
+- (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion;
+- (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion;
 
-- (void)repost:(JBFVine *)vine withCompletion:(void (^)(BOOL))completion;
+- (void)repost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion;
 
-- (void)commentOnPost:(JBFVine *)vine withComment:(NSString *)commentString withCompletion:(void (^)(BOOL))completion;
+- (void)commentOnPost:(JBFVine *)vine withComment:(NSString *)commentString withCompletion:(void (^)(BOOL success, NSError *error))completion;
 
 @end
