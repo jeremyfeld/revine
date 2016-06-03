@@ -40,6 +40,7 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
     if (self) {
         _nextPage = [[NSMutableString alloc] init];
         _sessionManager = [AFHTTPSessionManager manager];
+        _sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     }
     
     return self;
@@ -60,6 +61,8 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
             self.userID = responseObject[@"data"][@"userId"];
             self.avatarUrlString = responseObject [@"data"][@"avatarUrl"];
             
+            [self.sessionManager.requestSerializer setValue:self.userKey forHTTPHeaderField:@"vine-session-id"];
+            
             loggedIn(YES, nil);
             
         } else {
@@ -74,8 +77,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 
 - (void)getPopularVinesWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion
 {
-    [self setJSONSerializerAndUserKey];
-    
     [self.sessionManager GET:[NSString stringWithFormat:@"%@/timelines/popular", VINE_API_BASE_URL] parameters:nil progress:^(NSProgress *downloadProgress) {
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -104,8 +105,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 
 - (void)getPopularVinesForNextPage:(NSString *)page withCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion
 {
-    [self setJSONSerializerAndUserKey];
-    
     [self.sessionManager GET:[NSString stringWithFormat:@"%@/timelines/popular?page=%@", VINE_API_BASE_URL, self.nextPage] parameters:nil progress:^(NSProgress *downloadProgress) {
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -134,8 +133,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 
 - (void)getUserTimelineWithCompletion:(void (^)(NSArray <JBFVine *> *vines, NSError *error))completion;
 {
-    [self setJSONSerializerAndUserKey];
-    
     [self.sessionManager GET:[NSString stringWithFormat:@"%@/timelines/users/%@", VINE_API_BASE_URL, self.userID] parameters:nil progress:^(NSProgress *downloadProgress) {
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -164,8 +161,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 
 - (void)likePost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
-    [self setJSONSerializerAndUserKey];
-    
     [self.sessionManager POST:[NSString stringWithFormat:@"%@/posts/%@/likes", VINE_API_BASE_URL, [self postIDForVine:vine]] parameters:nil progress:^(NSProgress *uploadProgress) {
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -180,8 +175,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 
 - (void)unlikePost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
-    [self setJSONSerializerAndUserKey];
-    
     [self.sessionManager DELETE:[NSString stringWithFormat:@"%@/posts/%@/likes", VINE_API_BASE_URL, [self postIDForVine:vine]] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         
         completion(YES, nil);
@@ -194,8 +187,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 
 - (void)repost:(JBFVine *)vine withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
-    [self setJSONSerializerAndUserKey];
-    
     [self.sessionManager POST:[NSString stringWithFormat:@"%@/posts/%@/repost", VINE_API_BASE_URL, [self postIDForVine:vine]] parameters:nil progress:^(NSProgress *uploadProgress) {
         
     } success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -211,12 +202,6 @@ static NSString *const VINE_API_BASE_URL = @"https://api.vineapp.com";
 - (void)commentOnPost:(JBFVine *)vine withComment:(NSString *)commentString withCompletion:(void (^)(BOOL success, NSError *error))completion
 {
     
-}
-
-- (void)setJSONSerializerAndUserKey
-{
-    self.sessionManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
-    [self.sessionManager.requestSerializer setValue:self.userKey forHTTPHeaderField:@"vine-session-id"];
 }
 
 - (NSString *)postIDForVine:(JBFVine *)vine

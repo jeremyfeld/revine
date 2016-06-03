@@ -73,14 +73,14 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     
     private func setupLabels() {
         
-        let dateFormatter: NSDateFormatter = NSDateFormatter.init()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.ssssss"
-        let date: NSDate! = dateFormatter.dateFromString(vine!.dateString)
+        let date = dateFormatter.dateFromString(vine!.dateString)
         dateFormatter.dateFormat = "MMM d, yyyy"
         
         usernameLabel.text = vine!.username
         titleLabel.text = vine!.title
-        datePostedLabel.text = dateFormatter.stringFromDate(date)
+        datePostedLabel.text = dateFormatter.stringFromDate(date!)
         
         numberOfLoopsLabel.text = formattedStringFromNumber(vine!.loops)
         numberOfLikesLabel.text = formattedStringFromNumber(vine!.likes)

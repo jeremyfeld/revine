@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 
 private let reuseIdentifier = "vinePostCellReuseId"
+
 protocol ErrorAlertProtocol: class {
     
     func displayAlertForError(error:NSError)
@@ -20,7 +21,7 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAler
     private var currentCell = JBFVinePostCollectionViewCell()
     private var previousCell = JBFVinePostCollectionViewCell()
     private var offsetForNextCell: CGFloat = CGFloat()
-    private var vines: [JBFVine] = []
+    private var vines = [JBFVine]()
     
     override func viewDidLoad() {
         
@@ -58,8 +59,8 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAler
     
     func playerItemDidReachEnd(notification: NSNotification) {
         
-        currentCell.cellAVPlayer!.seekToTime(kCMTimeZero)
-        currentCell.cellAVPlayer!.play()
+        currentCell.cellAVPlayer?.seekToTime(kCMTimeZero)
+        currentCell.cellAVPlayer?.play()
     }
     
     //MARK: - Helper Methods
@@ -76,6 +77,13 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAler
         let controller = UIAlertController.alertControllerWithTitle("Oops!", message: "There was an error: \(error.localizedDescription)")
         
         presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    //MARK: - Deinitialization
+    
+    deinit {
+        
+        removeObserver(self, forKeyPath: AVPlayerItemDidPlayToEndTimeNotification)
     }
 }
 
@@ -113,7 +121,7 @@ extension JBFVineFeedCollectionViewController {
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
         currentCell = cell as! JBFVinePostCollectionViewCell
-        currentCell.cellAVPlayer!.play()
+        currentCell.cellAVPlayer?.play()
         
         offsetForNextCell = contentOffsetForIndexPath(indexPath)
     }
