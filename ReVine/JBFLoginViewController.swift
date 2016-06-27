@@ -32,7 +32,6 @@ class JBFLoginViewController: UIViewController {
                 self.performSegueWithIdentifier("segueToTimeline", sender: self)
                 
             } else {
-                
                 if error != nil {
                     let controller = UIAlertController.alertControllerWithTitle("Oops!", message: "There was an error logging in: \(error.localizedDescription)")
                     
@@ -68,6 +67,5 @@ class JBFLoginViewController: UIViewController {
         shake.velocity = NSNumber(int: 2500)
         shake.removedOnCompletion = true
         textField.layer.pop_addAnimation(shake, forKey: "shakeAnimation")
-
     }
 }

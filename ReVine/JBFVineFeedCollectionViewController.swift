@@ -11,17 +11,25 @@ import AVFoundation
 
 private let reuseIdentifier = "vinePostCellReuseId"
 
-protocol ErrorAlertProtocol: class {
+protocol AlertProtocol: class {
     
     func displayAlertForError(error:NSError)
+    func displayAlertForComment()
 }
 
-class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAlertProtocol {
+enum ScrollDirection: String {
+    case ScrollingDown = "scrollingDown"
+    case ScrollingUp = "scrollingUp"
+}
+
+class JBFVineFeedCollectionViewController: UICollectionViewController, AlertProtocol {
     
     private var currentCell = JBFVinePostCollectionViewCell()
     private var previousCell = JBFVinePostCollectionViewCell()
-    private var offsetForNextCell: CGFloat = CGFloat()
+    private var offsetForNextCell = CGFloat()
+    private var directionalContentOffset = CGFloat()
     private var vines = [JBFVine]()
+    private var scrollDirection = String()
     
     override func viewDidLoad() {
         
@@ -31,10 +39,11 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAler
             
             if array.count > 0 && error == nil {
                 self.vines = array
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({
-                    self.collectionView?.reloadData()
-                })
+                self.collectionView?.reloadData()
+                self.collectionView?.layoutIfNeeded()
+                dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                    self.currentCell.cellAVPlayer!.play()
+                }
                 
             } else {
                 let controller = UIAlertController.alertControllerWithTitle("Uh-oh!", message: "There was an error loading the timeline: \(error.localizedDescription)")
@@ -42,10 +51,12 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAler
                 self.presentViewController(controller, animated: true, completion: nil)
             }
         }
-
+        
         self.collectionView!.registerClass(JBFVinePostCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(JBFVineFeedCollectionViewController.playerItemDidReachEnd(_:)), name: AVPlayerItemDidPlayToEndTimeNotification, object:currentCell.cellAVPlayer)
+        
+        customizeNavigationBar()
     }
     
     //MARK: - UICollectionViewDataSource
@@ -67,14 +78,32 @@ class JBFVineFeedCollectionViewController: UICollectionViewController, ErrorAler
     
     private func contentOffsetForIndexPath(indexPath: NSIndexPath) -> CGFloat {
         
-        return view.frame.height * CGFloat(indexPath.item)
+        return view.frame.size.height * CGFloat(indexPath.item)
     }
     
-    //MARK: - ErrorAlertProtocol
+    func postComment() {
+    
+    }
+    
+    //MARK: - AlertProtocol
     
     func displayAlertForError(error: NSError) {
         
         let controller = UIAlertController.alertControllerWithTitle("Oops!", message: "There was an error: \(error.localizedDescription)")
+        
+        presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    func displayAlertForComment() {
+        
+        let controller = UIAlertController(title: "Comment", message: nil, preferredStyle: .Alert)
+        
+        controller.addTextFieldWithConfigurationHandler { (text) in
+            text.placeholder = "Enter your comment:"
+        }
+        controller.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler:nil))
+        controller.addAction(UIAlertAction(title: "Post", style: .Default, handler: { (action) in
+        }))
         
         presentViewController(controller, animated: true, completion: nil)
     }
@@ -97,7 +126,7 @@ extension JBFVineFeedCollectionViewController {
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
+        
         return vines.count
     }
     
@@ -105,10 +134,9 @@ extension JBFVineFeedCollectionViewController {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("JBFVinePostCollectionViewCell", forIndexPath: indexPath) as! JBFVinePostCollectionViewCell
         
-        cell.delegate = self
-        
         let vine = vineForIndexPath(indexPath)
         cell.vine = vine
+        cell.delegate = self
         
         return cell
     }
@@ -121,7 +149,6 @@ extension JBFVineFeedCollectionViewController {
     override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
         currentCell = cell as! JBFVinePostCollectionViewCell
-        currentCell.cellAVPlayer?.play()
         
         offsetForNextCell = contentOffsetForIndexPath(indexPath)
     }
@@ -132,12 +159,33 @@ extension JBFVineFeedCollectionViewController {
         previousCell.cellAVPlayer!.pause()
     }
     
-    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    
+    override func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        if collectionView?.contentOffset.y > (offsetForNextCell - (view.frame.height / 2)) {
+        if  scrollDirection == ScrollDirection.ScrollingDown.rawValue &&
+            collectionView?.contentOffset.y > (offsetForNextCell - (view.frame.size.height / 2)) {
             
             collectionView?.setContentOffset(CGPointMake(0, offsetForNextCell), animated: true)
+            currentCell.cellAVPlayer?.play()
+            
+        } else if scrollDirection == ScrollDirection.ScrollingUp.rawValue &&
+            collectionView?.contentOffset.y < (offsetForNextCell + (view.frame.size.height / 2)) {
+            
+            collectionView?.setContentOffset(CGPointMake(0, offsetForNextCell), animated: true)
+            currentCell.cellAVPlayer?.play()
         }
+    }
+    
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+
+        if (directionalContentOffset > collectionView!.contentOffset.y) {
+            scrollDirection = ScrollDirection.ScrollingUp.rawValue
+  
+        } else if (directionalContentOffset < collectionView!.contentOffset.y) {
+            scrollDirection = ScrollDirection.ScrollingDown.rawValue
+        }
+        
+        directionalContentOffset = collectionView!.contentOffset.y
     }
 }
 
@@ -150,5 +198,18 @@ extension JBFVineFeedCollectionViewController : UICollectionViewDelegateFlowLayo
                                sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
         return CGSizeMake(view.bounds.size.width, view.bounds.size.height)
+    }
+}
+
+    //MARK: - Nav Bar Customization
+
+extension JBFVineFeedCollectionViewController {
+    
+    func customizeNavigationBar() {
+        
+        let logo = UIImage(named: "vine-med")
+        let imageView = UIImageView(image:logo)
+        self.navigationItem.titleView = imageView
+        
     }
 }

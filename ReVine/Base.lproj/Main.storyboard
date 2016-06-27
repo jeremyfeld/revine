@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tAO-mO-cuU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tAO-mO-cuU">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -138,19 +138,19 @@
                         <outlet property="emailTextField" destination="mct-nW-2aR" id="Loa-cz-Why"/>
                         <outlet property="loginButton" destination="q41-ru-Gyo" id="Hpb-Hp-75e"/>
                         <outlet property="passwordTextField" destination="Dau-D5-eqX" id="qqH-gh-ZMQ"/>
-                        <segue destination="eJV-ry-wUW" kind="presentation" identifier="segueToTimeline" id="5pP-a6-bT9"/>
+                        <segue destination="SVd-WD-szA" kind="presentation" identifier="segueToTimeline" id="5pP-a6-bT9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZNR-Gu-l0r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="180.5" y="162.5"/>
+            <point key="canvasLocation" x="431.5" y="162.5"/>
         </scene>
         <!--Vine Feed Collection View Controller-->
         <scene sceneID="NOZ-Rj-fOX">
             <objects>
                 <collectionViewController id="eJV-ry-wUW" customClass="JBFVineFeedCollectionViewController" customModule="ReVine" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="Zsc-LO-Byk">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="hoZ-1F-7iL">
                             <size key="itemSize" width="374.5" height="667"/>
@@ -395,10 +395,12 @@
                             <outlet property="delegate" destination="eJV-ry-wUW" id="bfO-m3-QUq"/>
                         </connections>
                     </collectionView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" id="mGp-5C-eOv"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3T2-0n-zYb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="924.5" y="162.5"/>
+            <point key="canvasLocation" x="1511.5" y="162.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jnC-dd-p25">
@@ -419,6 +421,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zHG-fz-KFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-632" y="162"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ksW-pJ-eOo">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SVd-WD-szA" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="tnt-Id-I4P">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="0.74901960784313726" blue="0.5607843137254902" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="eJV-ry-wUW" kind="relationship" relationship="rootViewController" id="g4M-kz-fiB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w0F-qM-x7i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="924.5" y="162.5"/>
         </scene>
     </scenes>
     <resources>

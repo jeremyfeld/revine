@@ -23,14 +23,13 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var numberOfCommentsLabel: UILabel!
     @IBOutlet weak var numberOfRepostsLabel: UILabel!
     @IBOutlet weak var userAvatarImageView: UIImageView!
-    @IBOutlet weak var vineThumbnailImageView: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var repostButton: UIButton!
     private let originalLikeImage = UIImage(named: "like");
     private let originalRepostImage = UIImage(named: "repost")
     private var tintedLikeImage = UIImage()
     private var tintedRepostImage = UIImage()
-    weak var delegate: ErrorAlertProtocol?
+    weak var delegate: AlertProtocol?
     
     let avPlayerLayer = AVPlayerLayer()
     var cellAVPlayer: AVPlayer?
@@ -129,7 +128,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
                     
                 } else {
                     if error != nil {
-                        //send error to VC
+                        self.delegate?.displayAlertForError(error)
                     }
                 }
             })
@@ -151,7 +150,7 @@ class JBFVinePostCollectionViewCell: UICollectionViewCell {
     
     @IBAction func commentButtonTapped(sender: AnyObject) {
         
-        //comment - will need to present a view for text entry
+        self.delegate?.displayAlertForComment()
     }
     
     @IBAction func repostButtonTapped(sender: AnyObject) {

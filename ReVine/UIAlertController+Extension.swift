@@ -1,5 +1,5 @@
 //
-//  UIAlertController+Convenience.swift
+//  UIAlertController+Extension.swift
 //  ReVine
 //
 //  Created by Jeremy Feld on 5/30/16.
